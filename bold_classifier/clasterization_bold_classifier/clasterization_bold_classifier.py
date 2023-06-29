@@ -1,20 +1,13 @@
 from abc import abstractmethod
 from ..bold_classifier import BaseBoldClassifier, BOLD, REGULAR
+from .utils import listlist2vector, vector2listlist
 from typing import List
 import numpy as np
 from dataset_reader.bbox import BBox  # TODO Изменить путь
-
-
-TYPE_LINE = 0
-TYPE_WORD = 1
-TYPE_LINE_WORD = 2
+from sklearn.cluster import KMeans
 
 
 class ClasterizationBoldClassifier(BaseBoldClassifier):
-    def __init__(self, k0, type_stat):
-        self.k0 = k0
-        self.type_stat = type_stat
-
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
         processed_image = self.preprocessing(image)
         lines_estimates = self.get_evaluation_bboxes(processed_image, bboxes)
@@ -42,35 +35,16 @@ class ClasterizationBoldClassifier(BaseBoldClassifier):
         pass
 
     def clasterization(self, lines_estimates: List[List[float]]) -> List[List[float]]:
-        lines_bold_indicators = []
-
-        for i in range(len(lines_estimates)):
-            mu = np.mean(lines_estimates[i])
-            sigma = np.std(lines_estimates[i])
-            lines_bold_indicators.append([])
-            if self.type_stat == TYPE_LINE_WORD:
-                for j in range(len(lines_estimates[i])):
-                    if self.k0 > mu + sigma:
-                        lines_bold_indicators[-1].append(BOLD)
-                    elif self.k0 < mu - sigma:
-                        lines_bold_indicators[-1].append(REGULAR)
-                    elif lines_estimates[i][j] > self.k0:
-                        lines_bold_indicators[-1].append(REGULAR)
-                    else:
-                        lines_bold_indicators[-1].append(BOLD)
-            elif self.type_stat == TYPE_LINE:
-                for j in range(len(lines_estimates[i])):
-                    if self.k0 > mu:
-                        lines_bold_indicators[-1].append(BOLD)
-                    else:
-                        lines_bold_indicators[-1].append(REGULAR)
-            elif self.type_stat == TYPE_WORD:
-                for j in range(len(lines_estimates[i])):
-                    if lines_estimates[i][j] > self.k0:
-                        lines_bold_indicators[-1].append(REGULAR)
-                    else:
-                        lines_bold_indicators[-1].append(BOLD)
+        len_lines = [len(line) for line in lines_estimates]
+        X = listlist2vector(lines_estimates, len_lines)
+        X = [[x] for x in X]
+        # print(X, len(X))
+        kmeans = KMeans(n_clusters=2)
+        kmeans.fit(X)
+        X = kmeans.labels_*1.0
+        lines_bold_indicators = vector2listlist(X, len_lines)
         return lines_bold_indicators
+
 
     # Возращение результатов без кластеризации (полезна при отладке)
     def get_lines_estimates(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:

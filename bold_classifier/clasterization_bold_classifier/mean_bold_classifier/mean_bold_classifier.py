@@ -5,10 +5,6 @@ import numpy as np
 
 
 class MeanBoldClassifier(ClasterizationBoldClassifier):
-    def __init__(self, k0=0.45, type_stat=2):
-        self.k0 = k0
-        self.type_stat = type_stat
-
     def preprocessing(self, image: np.ndarray) -> np.ndarray:
         ve_binarizer = ValleyEmphasisBinarizer()
         return ve_binarizer.binarize(image)
