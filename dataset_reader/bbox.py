@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from typing import Tuple, Dict
 
-from dedoc.data_structures.serializable import Serializable
+from .serializable import Serializable
 
 
 class BBox(Serializable):
