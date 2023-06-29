@@ -30,9 +30,9 @@ def base_line_image(image: np.ndarray) -> np.ndarray:
                 max2 = dmean[i]
                 argmax2 = i
     h_min = min(argmax1, argmax2)
-    h_max = max(argmax1, argmax2)
+    h_max = min(max(argmax1, argmax2)+1, h)
 
-    return image[h_min:h_max + 1, :]
+    return image[h_min:h_max, :]
 
 
 def listlist2vector(listlist: List[List[float]], len_list: List[int]) -> np.ndarray:
