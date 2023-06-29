@@ -8,10 +8,6 @@ from sklearn.cluster import KMeans
 
 
 class ClasterizationBoldClassifier(BaseBoldClassifier):
-    def __init__(self):
-        self.k0 = 0.5
-        self.std = 0.1
-
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
         processed_image = self.preprocessing(image)
         lines_estimates = self.get_evaluation_bboxes(processed_image, bboxes)
@@ -41,24 +37,26 @@ class ClasterizationBoldClassifier(BaseBoldClassifier):
     def clasterization(self, lines_estimates: List[List[float]]) -> List[List[float]]:
         len_lines = [len(line) for line in lines_estimates]
         X = listlist2vector(lines_estimates, len_lines)
-        X = [[x] for x in X]
+        XX = X.copy()
+        XX[:-1] += X[1:]
+        XX[1:] += X[:-1]
+        XX[0] += X[0]
+        XX[-1] += X[-1]
+        XX = XX/3.
+        X_vec = [[X[i], XX[i]] for i in range(len(X))]
         kmeans = KMeans(n_clusters=2, n_init="auto")
-        kmeans.fit(X)
-        X = kmeans.labels_
+        kmeans.fit(X_vec)
+        X_clust = kmeans.labels_
 
         cluster0 = kmeans.cluster_centers_[0][0]
         cluster1 = kmeans.cluster_centers_[1][0]
-        print(f"cluster 0:{cluster0}, clusrer 1:{cluster1}")
-        center_cluster = (cluster0+cluster1)/2
+
         bold_cluster = min(cluster0, cluster1)
         regular_cluster = max(cluster0, cluster1)
         if cluster0 == bold_cluster:
-            X = 1.0 - X
-        if bold_cluster > self.k0+self.std:
-            X = np.zeros_like(X)
-        elif regular_cluster < self.k0-self.std:
-            X = np.ones_like(X)
-        lines_bold_indicators = vector2listlist(X, len_lines)
+            X_clust = 1.0 - X_clust
+
+        lines_bold_indicators = vector2listlist(X_clust, len_lines)
         return lines_bold_indicators
 
 
