@@ -7,10 +7,13 @@ COLOR_BOLD_ROW = (255, 0, 0)
 COLOR_OFFSET_ROW = (0, 0, 255)
 COLOR_REGULAR_ROW = (0, 255, 0)
 OFFSET_ROW = 2
-HEIGHT = 800
+
 
 
 class Drawer:
+    def __init__(self):
+        self.HEIGHT = 800
+
     def imshow(self, img: np.ndarray, bboxes: List[List[BBox]], style: List[List[float]]):
 
         h = img.shape[0]
@@ -34,6 +37,6 @@ class Drawer:
                     color = COLOR_REGULAR_ROW
                 cv2.rectangle(img_cope, (word.x_top_left, word.y_top_left),
                               (word.x_bottom_right, word.y_bottom_right), color, border)
-        img = cv2.resize(img_cope, (round(coef * HEIGHT), HEIGHT))
+        img = cv2.resize(img_cope, (round(coef * self.HEIGHT), self.HEIGHT))
         cv2.imshow("img", img)
         cv2.waitKey(0)
