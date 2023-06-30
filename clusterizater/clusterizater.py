@@ -42,7 +42,10 @@ class BaseClusterizater(ABC):
         FP = sum(FX)
         FN = len(FX) - FP
 
-        p = TP / (TP + FP)
+        if TP+FP == 0:
+            p = 1.
+        else:
+            p = TP / (TP + FP)
         if TP + FN == 0:
             r = 1.
         else:
