@@ -5,11 +5,12 @@
 - **binarizer** - "бинаризатор" - проводит бинаризацию изображения
 - **bold_classifier** - "классификатор жирного начертания" (ставит слову в соответствие 
 1 или 0 т.е жирный или не жирный текст)
+- **clusterizater** - "кластеризатор по оценки относит к классу"
 - **dataset** - пример размеченных данных
 - **dataset_reader** - все, что необходимо для чтения изображений и 
 получения входных данных (изображение и разметка)
 
-setup загружает 3 пакета: binarizer, bold_classifier, dataset_reader
+setup загружает 4 пакета: binarizer, bold_classifier, clusterizater, dataset_reader
 ```python
 python3 -m pip install .
 ```
@@ -21,3 +22,13 @@ python3 -m pip install .
 
 ### Бинариза'тор:
 **ValleyEmphasisBinarizer** - бинаризация выделение впадины (адаптивная бинаризация)
+
+**AdapBinarizer** - адаптивная бинаризация
+
+
+### Кластериза'тор
+**Bold2MeanClusterizater** - KMean кластеризация (k=2)
+
+**BoldSpectralClusterizater** - Выделение связных компонент
+
+**BoldFixedThresholdClusterizater** - Пороговая кластеризация (порог = 0.5)
