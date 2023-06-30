@@ -94,7 +94,7 @@ class ValleyEmphasisBinarizer:
         mu_2 = 0
         mu_k = 0
 
-        for t in range(255):
+        for t in range(254):
             omega_1 = omega_1 + c[t] / total
             omega_2 = 1 - omega_1
             mu_k = mu_k + (t) * (c[t] / total)
