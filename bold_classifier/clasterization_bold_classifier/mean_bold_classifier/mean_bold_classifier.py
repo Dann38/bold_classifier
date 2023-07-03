@@ -9,13 +9,8 @@ import numpy as np
 
 class MeanBoldClassifier(ClasterizationBoldClassifier):
     def preprocessing(self, image: np.ndarray) -> np.ndarray:
-        ve_binarizer = ValleyEmphasisBinarizer()
-        return ve_binarizer.binarize(image)
-
-        # adap = AdapBinarizer()                                                    # ДЛЯ НЕЧЕТКИХ ИЗОБРАЖЕНИЙ ПЛОХО
-        # gray = cv2.cvtColor(adap.binarize(image), cv2.COLOR_RGB2GRAY)
-        # ret, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-        # return binary / 255
+        ve_bin = ValleyEmphasisBinarizer()
+        return ve_bin.binarize(image)
 
     def evaluation_method(self, image: np.ndarray) -> float:
         bl_image = base_line_image(image)

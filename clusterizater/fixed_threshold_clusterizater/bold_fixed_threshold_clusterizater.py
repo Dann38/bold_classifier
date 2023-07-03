@@ -14,7 +14,6 @@ class BoldFixedThresholdClusterizater(BaseClusterizater):
         XX[0] += X[0]
         XX[-1] += X[-1]
         XX = XX / 3.
-        mu = np.mean(X)
         std = np.std(X)
         X_cluster[XX+std < k] = 1.
         X_cluster[X < k] = 1.
