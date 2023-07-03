@@ -5,6 +5,8 @@ from sklearn.cluster import KMeans
 
 
 class Bold2MeanClusterizater(BaseClusterizater):
+    def __init__(self, significance_level=0.1):
+        self.significance_level = significance_level
 
     def clusterization(self, X: np.ndarray) -> np.ndarray:
         XX = X.copy()
@@ -16,15 +18,13 @@ class Bold2MeanClusterizater(BaseClusterizater):
         X_vec = [[X[i], XX[i]] for i in range(len(X))]
         kmeans = KMeans(n_clusters=2, n_init="auto")
         kmeans.fit(X_vec)
-        # X_clust = kmeans.labels_
 
         cluster0 = kmeans.cluster_centers_[0][0]
         cluster1 = kmeans.cluster_centers_[1][0]
 
         bold_cluster = min(cluster0, cluster1)
         regular_cluster = max(cluster0, cluster1)
-        print(bold_cluster,  regular_cluster)
         distance_cluster = regular_cluster-bold_cluster
         X_clust = np.zeros_like(X)
-        X_clust[X-bold_cluster < bold_cluster+distance_cluster*0.05] = 1.
+        X_clust[X-bold_cluster < bold_cluster+distance_cluster*self.significance_level] = 1.
         return X_clust
