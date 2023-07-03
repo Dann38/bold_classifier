@@ -1,6 +1,6 @@
 from abc import abstractmethod
-from ..bold_classifier import BaseBoldClassifier, BOLD, REGULAR
-from clusterizater import Bold2MeanClusterizater
+from ..bold_classifier import BaseBoldClassifier
+from clusterizater import BoldSpectralClusterizater
 from typing import List, Dict
 import numpy as np
 from dataset_reader.bbox import BBox  # TODO Изменить путь
@@ -8,7 +8,7 @@ from dataset_reader.page import Page
 
 
 class ClasterizationBoldClassifier(BaseBoldClassifier):
-    def __init__(self, clusterizater=Bold2MeanClusterizater):
+    def __init__(self, clusterizater=BoldSpectralClusterizater):
         self.clusterizater = clusterizater()
 
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
@@ -63,7 +63,7 @@ class ClasterizationBoldClassifier(BaseBoldClassifier):
         for num_page in range(count_pages):
             listlist = self.classify(pages[num_page].image, pages[num_page].bboxes)
             evalution_method = self.clusterizater.evalution_listlist(listlist, pages[num_page].style)
-            print(evalution_method)
+            # print(evalution_method)
             for key in evalution_sum.keys():
                 if key == "N":
                     evalution_sum[key] += evalution_method["N"]
