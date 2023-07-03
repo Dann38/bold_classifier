@@ -15,13 +15,22 @@ class Drawer:
         self.HEIGHT = 800
 
     def imshow(self, img: np.ndarray, bboxes: List[List[BBox]], style: List[List[float]]):
-
         h = img.shape[0]
         w = img.shape[1]
-
-        img_cope = img.copy()
-
         coef = w / h
+        img_mark = self.mark_out(img , bboxes, style)
+        img = cv2.resize(img_mark, (round(coef * self.HEIGHT), self.HEIGHT))
+        cv2.imshow("img", img)
+        cv2.waitKey(0)
+
+    def imsave(self, img: np.ndarray, bboxes: List[List[BBox]], style: List[List[float]], path: str, ):
+        h = img.shape[0]
+        w = img.shape[1]
+        img_mark = self.mark_out(img, bboxes, style)
+        cv2.imwrite(path, img_mark)
+
+    def mark_out(self, img: np.ndarray, bboxes: List[List[BBox]], style: List[List[float]]) -> np.ndarray:
+        img_mark = img.copy()
         for i in range(len(bboxes)):
             for j in range(len(bboxes[i])):
                 border = 1
@@ -35,8 +44,7 @@ class Drawer:
                     color = COLOR_OFFSET_ROW
                 elif style_word == REGULAR:
                     color = COLOR_REGULAR_ROW
-                cv2.rectangle(img_cope, (word.x_top_left, word.y_top_left),
+                cv2.rectangle(img_mark, (word.x_top_left, word.y_top_left),
                               (word.x_bottom_right, word.y_bottom_right), color, border)
-        img = cv2.resize(img_cope, (round(coef * self.HEIGHT), self.HEIGHT))
-        cv2.imshow("img", img)
-        cv2.waitKey(0)
+
+        return img_mark
