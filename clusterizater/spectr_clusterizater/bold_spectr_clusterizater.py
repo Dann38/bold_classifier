@@ -3,7 +3,7 @@ from sklearn.cluster import SpectralClustering
 from scipy.stats import norm
 
 from ..clusterizater import BaseClusterizater
-from bold_classifier import BOLD, REGULAR
+from types_font import BOLD, REGULAR
 
 
 class BoldSpectralClusterizater(BaseClusterizater):

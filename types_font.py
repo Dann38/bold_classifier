@@ -1,0 +1,2 @@
+BOLD = 1.0
+REGULAR = 0.0

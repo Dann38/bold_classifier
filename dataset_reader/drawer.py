@@ -1,4 +1,4 @@
-from bold_classifier.bold_classifier import BOLD, REGULAR
+from types_font import BOLD, REGULAR
 from typing import List
 from dataset_reader.bbox import BBox
 import cv2
