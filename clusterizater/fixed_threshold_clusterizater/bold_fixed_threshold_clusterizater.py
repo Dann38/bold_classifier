@@ -1,21 +1,21 @@
 import numpy as np
 
 from ..clusterizater import BaseClusterizater
-
+from bold_classifier import BOLD, REGULAR
 
 class BoldFixedThresholdClusterizater(BaseClusterizater):
 
-    def clusterization(self, X: np.ndarray) -> np.ndarray:
+    def clusterization(self, x: np.ndarray) -> np.ndarray:
         k = 0.5
-        X_cluster = np.zeros_like(X)
-        XX = X.copy()
-        XX[:-1] += X[1:]
-        XX[1:] += X[:-1]
-        XX[0] += X[0]
-        XX[-1] += X[-1]
-        XX = XX / 3.
-        std = np.std(X)
-        X_cluster[XX+std < k] = 1.
-        X_cluster[X < k] = 1.
-        X_cluster[XX-std > k] = 0.
-        return X_cluster
+        x_cluster = np.zeros_like(x)
+        nearby_x = x.copy()
+        nearby_x[:-1] += x[1:]
+        nearby_x[1:] += x[:-1]
+        nearby_x[0] += x[0]
+        nearby_x[-1] += x[-1]
+        nearby_x = nearby_x / 3.
+        std = np.std(x)
+        x_cluster[nearby_x+std < k] = BOLD
+        x_cluster[x < k] = BOLD
+        x_cluster[nearby_x-std > k] = REGULAR
+        return x_cluster

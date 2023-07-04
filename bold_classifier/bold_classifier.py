@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
-from dataset_reader.bbox import BBox
 import numpy as np
+
+from dataset_reader.bbox import BBox
 
 BOLD = 1.0
 REGULAR = 0.0

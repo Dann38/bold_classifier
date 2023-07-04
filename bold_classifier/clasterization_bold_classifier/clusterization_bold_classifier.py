@@ -1,11 +1,13 @@
 from abc import abstractmethod
-from ..bold_classifier import BaseBoldClassifier
-from clusterizater import BoldSpectralClusterizater
-from binarizer import ValleyEmphasisBinarizer
 from typing import List
 import numpy as np
-from dataset_reader.bbox import BBox
+
+from ..bold_classifier import BaseBoldClassifier
 from ..utils import vector2llist, llist2vector
+
+from clusterizater import BoldSpectralClusterizater
+from binarizer import ValleyEmphasisBinarizer
+from dataset_reader.bbox import BBox
 
 PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop bbox
 

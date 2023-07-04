@@ -1,4 +1,5 @@
 import numpy as np
+
 from ..clusterization_bold_classifier import ClasterizationBoldClassifier
 
 
