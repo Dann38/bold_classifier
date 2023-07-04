@@ -38,7 +38,6 @@ class Reader:
 
         image = self.get_image(path_dir, img_path)
         bboxes, style = self.get_bboxes_and_style(path_dir, pkl_path)
-
         page = Page(image, bboxes, style)
         return page
 
@@ -51,7 +50,7 @@ class Reader:
         return image
 
     def get_bboxes_and_style(self, path_dir: str,
-                             name_pkl_file: str) -> (List[List[int]], List[List[int]]):
+                             name_pkl_file: str) -> (List[List[BBox]], List[List[float]]):
         path_image = os.path.join(path_dir, name_pkl_file)
         with open(path_image, 'rb') as f:
             (dict_lines, style) = pickle.load(f)
