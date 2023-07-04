@@ -4,7 +4,6 @@ from ..clusterization_bold_classifier import ClasterizationBoldClassifier
 
 
 class HistBoldClassifier(ClasterizationBoldClassifier):
-
     def evaluation_method(self, image: np.ndarray) -> float:
         step_hist = 0.05
         img = self.get_base_line_image(image)

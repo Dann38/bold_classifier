@@ -5,6 +5,7 @@ from scipy.stats import norm
 from ..clusterizater import BaseClusterizater
 from bold_classifier import BOLD, REGULAR
 
+
 class BoldSpectralClusterizater(BaseClusterizater):
     def __init__(self, significance_level=0.5):
         self.significance_level = significance_level

@@ -3,8 +3,8 @@ import numpy as np
 from ..clusterizater import BaseClusterizater
 from bold_classifier import BOLD, REGULAR
 
-class BoldFixedThresholdClusterizater(BaseClusterizater):
 
+class BoldFixedThresholdClusterizater(BaseClusterizater):
     def clusterization(self, x: np.ndarray) -> np.ndarray:
         k = 0.5
         x_cluster = np.zeros_like(x)
