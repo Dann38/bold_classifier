@@ -44,6 +44,10 @@ def evaluate_on_dataset(classifier: BaseBoldClassifier, pages: List[Page]) -> Di
         if key != "N":
             evaluate_sum[key] = evaluate_sum[key] / evaluate_sum["N"]
 
+    p = evaluate_sum["precession"]
+    r = evaluate_sum["recall"]
+    evaluate_sum["F1"] = 2*p*r/(p+r)
+
     return evaluate_sum
 
 
@@ -92,5 +96,7 @@ if __name__ == "__main__":
 
         print("*" * 15, name_dataset, "*" * 15)
         for classifier in classifier_list:
-            evaluate_rez = evaluate_on_dataset(classifier(), pages)
+            cl = classifier()
+            cl.clusterizater.significance_level = 0.5
+            evaluate_rez = evaluate_on_dataset(cl, pages)
             print_evaluate(evaluate_rez)
