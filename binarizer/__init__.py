@@ -1,2 +1,2 @@
-from adap_binarizer import AdapBinarizer
-from valley_emphasis_binarizer import ValleyEmphasisBinarizer
+from .adap_binarizer import AdapBinarizer
+from .valley_emphasis_binarizer import ValleyEmphasisBinarizer
