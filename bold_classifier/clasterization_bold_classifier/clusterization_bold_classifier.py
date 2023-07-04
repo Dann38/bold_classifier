@@ -20,19 +20,19 @@ class ClasterizationBoldClassifier(BaseBoldClassifier):
 
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
         lines_estimates = self.get_lines_estimates(image, bboxes)
-        lines_bold_indicators = self.clusterization(lines_estimates)
+        lines_bold_indicators = self._clusterization(lines_estimates)
         return lines_bold_indicators
 
     def get_lines_estimates(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
-        processed_image = self.preprocessing(image)
-        lines_estimates = self.get_evaluation_bboxes(processed_image, bboxes)
+        processed_image = self._preprocessing(image)
+        lines_estimates = self._get_evaluation_bboxes(processed_image, bboxes)
         return lines_estimates
 
-    def preprocessing(self, image: np.ndarray) -> np.ndarray:
+    def _preprocessing(self, image: np.ndarray) -> np.ndarray:
         return self.binarizer.binarize(image)
 
-    def get_evaluation_bboxes(self, image: np.ndarray,
-                              bboxes: List[List[BBox]]) -> List[List[float]]:
+    def _get_evaluation_bboxes(self, image: np.ndarray,
+                               bboxes: List[List[BBox]]) -> List[List[float]]:
         evaluation_bboxes = []
         for line in bboxes:
             evaluation_bboxes.append([])
@@ -47,18 +47,18 @@ class ClasterizationBoldClassifier(BaseBoldClassifier):
     def evaluation_method(self, image: np.ndarray) -> float:
         pass
 
-    def clusterization(self, lines_estimates: List[List[float]]) -> List[List[float]]:
+    def _clusterization(self, lines_estimates: List[List[float]]) -> List[List[float]]:
         len_lines = [len(line) for line in lines_estimates]
         word_estimates = llist2vector(lines_estimates, len_lines)
         word_indicators = self.clusterizater.clusterization(word_estimates)
         lines_estimates = vector2llist(word_indicators, len_lines)
         return lines_estimates
 
-    def get_rid_spaces(self, image: np.ndarray) -> np.ndarray:
+    def _get_rid_spaces(self, image: np.ndarray) -> np.ndarray:
         x = image.mean(0)
         return image[:, x < 0.95]
 
-    def get_base_line_image(self, image: np.ndarray) -> np.ndarray:
+    def _get_base_line_image(self, image: np.ndarray) -> np.ndarray:
         h = image.shape[0]
         if h < PERMISSIBLE_H_BBOX:
             return image
