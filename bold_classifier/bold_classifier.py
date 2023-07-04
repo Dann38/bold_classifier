@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from dataset_reader.bbox import BBox  # TODO Изменить путь
+from dataset_reader.bbox import BBox
 import numpy as np
 
 BOLD = 1.0

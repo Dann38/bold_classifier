@@ -1,16 +1,19 @@
 from abc import abstractmethod
 from ..bold_classifier import BaseBoldClassifier
 from clusterizater import BoldSpectralClusterizater
+from binarizer import ValleyEmphasisBinarizer
 from typing import List, Dict
 import numpy as np
-from dataset_reader.bbox import BBox  # TODO Изменить путь
+from dataset_reader.bbox import BBox
 from dataset_reader.page import Page
 
 PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop bbox
 
+
 # TODO Скрыть не публичные методы
 class ClasterizationBoldClassifier(BaseBoldClassifier):
-    def __init__(self, clusterizater=BoldSpectralClusterizater):
+    def __init__(self, binarizer=ValleyEmphasisBinarizer, clusterizater=BoldSpectralClusterizater):
+        self.binarizer = binarizer()
         self.clusterizater = clusterizater()
 
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
@@ -19,9 +22,8 @@ class ClasterizationBoldClassifier(BaseBoldClassifier):
         lines_bold_indicators = self.clasterization(lines_estimates)
         return lines_bold_indicators
 
-    @abstractmethod
     def preprocessing(self, image: np.ndarray) -> np.ndarray:
-        pass
+        return self.binarizer.binarize(image)
 
     def get_evaluation_bboxes(self, image: np.ndarray,
                               bboxes: List[List[BBox]]) -> List[List[float]]:
