@@ -1,12 +1,12 @@
 import numpy as np
-from ..clasterization_bold_classifier import ClasterizationBoldClassifier
+from ..clusterization_bold_classifier import ClasterizationBoldClassifier
 
 
 class HistBoldClassifier(ClasterizationBoldClassifier):
 
     def evaluation_method(self, image: np.ndarray) -> float:
         step_hist = 0.05
-        img = self.base_line_image(image)
+        img = self.get_base_line_image(image)
         img = self.get_rid_spaces(img)
         if len(img) == 0:
             return 1
