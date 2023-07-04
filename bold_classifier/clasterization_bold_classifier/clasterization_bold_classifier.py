@@ -6,7 +6,9 @@ import numpy as np
 from dataset_reader.bbox import BBox  # TODO Изменить путь
 from dataset_reader.page import Page
 
+PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop bbox
 
+# TODO Скрыть не публичные методы
 class ClasterizationBoldClassifier(BaseBoldClassifier):
     def __init__(self, clusterizater=BoldSpectralClusterizater):
         self.clusterizater = clusterizater()
@@ -33,6 +35,7 @@ class ClasterizationBoldClassifier(BaseBoldClassifier):
                 evaluation_bboxes[-1].append(evaluation_bbox)
         return evaluation_bboxes
 
+    # TODO Вынести в файл  evaluate.py
     @abstractmethod
     def evaluation_method(self, image: np.ndarray) -> float:
         pass
@@ -75,3 +78,33 @@ class ClasterizationBoldClassifier(BaseBoldClassifier):
                 evalution_sum[key] = evalution_sum[key] / evalution_sum["N"]
 
         return evalution_sum
+
+    def get_rid_spaces(self, image: np.ndarray) -> np.ndarray:
+        x = image.mean(0)
+        return image[:, x < 0.95]
+
+    def base_line_image(self, image: np.ndarray) -> np.ndarray:
+        h = image.shape[0]
+        if h < PERMISSIBLE_H_BBOX:
+            return image
+        mean_ = image.mean(1)
+        dmean = abs(mean_[:-1] - mean_[1:])
+
+        max1 = 0
+        max2 = 0
+        argmax1 = 0
+        argmax2 = 0
+        for i in range(len(dmean)):
+            if dmean[i] > max2:
+                if dmean[i] > max1:
+                    max2 = max1
+                    argmax2 = argmax1
+                    max1 = dmean[i]
+                    argmax1 = i
+                else:
+                    max2 = dmean[i]
+                    argmax2 = i
+        h_min = min(argmax1, argmax2)
+        h_max = min(max(argmax1, argmax2) + 1, h)
+
+        return image[h_min:h_max, :]
