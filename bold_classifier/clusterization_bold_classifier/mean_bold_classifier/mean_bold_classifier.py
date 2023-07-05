@@ -1,9 +1,9 @@
 import numpy as np
 
-from ..clusterization_bold_classifier import ClasterizationBoldClassifier
+from ..clusterization_bold_classifier import ClusterizationBoldClassifier
 
 
-class MeanBoldClassifier(ClasterizationBoldClassifier):
+class MeanBoldClassifier(ClusterizationBoldClassifier):
     def evaluation_method(self, image: np.ndarray) -> float:
         bl_image = self._get_base_line_image(image)
         image_s = self._get_rid_spaces(bl_image)

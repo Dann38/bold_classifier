@@ -1,9 +1,9 @@
 import numpy as np
 
-from ..clusterization_bold_classifier import ClasterizationBoldClassifier
+from ..clusterization_bold_classifier import ClusterizationBoldClassifier
 
 
-class PsBoldClassifier(ClasterizationBoldClassifier):
+class PsBoldClassifier(ClusterizationBoldClassifier):
     def evaluation_method(self, image: np.ndarray) -> float:
         image_p = self._get_base_line_image(image)  # baseline - main font area
         image_s = self._get_rid_spaces(image_p)  # removing spaces from a string

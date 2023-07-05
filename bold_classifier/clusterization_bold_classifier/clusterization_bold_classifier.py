@@ -12,8 +12,7 @@ from dataset_reader.bbox import BBox
 PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop bbox
 
 
-# TODO Скрыть не публичные методы
-class ClasterizationBoldClassifier(BaseBoldClassifier):
+class ClusterizationBoldClassifier(BaseBoldClassifier):
     def __init__(self, binarizer=ValleyEmphasisBinarizer, clusterizater=BoldSpectralClusterizater):
         self.binarizer = binarizer()
         self.clusterizater = clusterizater()
