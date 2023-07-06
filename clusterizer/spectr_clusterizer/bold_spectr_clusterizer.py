@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.cluster import SpectralClustering
 
 from ..clusterizater import BaseClusterizer
-from types_font import BOLD, REGULAR
+from bold_classifier.types_font import BOLD, REGULAR
 
 
 class BoldSpectralClusterizer(BaseClusterizer):

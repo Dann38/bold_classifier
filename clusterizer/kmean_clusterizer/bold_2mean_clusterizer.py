@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 from ..clusterizater import BaseClusterizer
-from types_font import BOLD, REGULAR
+from bold_classifier.types_font import BOLD, REGULAR
 
 
 class Bold2MeanClusterizer(BaseClusterizer):

@@ -1,7 +1,7 @@
 import numpy as np
 
 from ..clusterizater import BaseClusterizer
-from types_font import BOLD, REGULAR
+from bold_classifier.types_font import BOLD, REGULAR
 
 
 class BoldFixedThresholdClusterizer(BaseClusterizer):
