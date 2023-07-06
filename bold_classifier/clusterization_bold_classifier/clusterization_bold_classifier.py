@@ -19,18 +19,18 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
 
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
         lines_estimates = self.get_lines_estimates(image, bboxes)
-        lines_bold_indicators = self._clusterization(lines_estimates)
+        lines_bold_indicators = self.__clusterization(lines_estimates)
         return lines_bold_indicators
 
     def get_lines_estimates(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
         processed_image = self._preprocessing(image)
-        lines_estimates = self._get_evaluation_bboxes(processed_image, bboxes)
+        lines_estimates = self.__get_evaluation_bboxes(processed_image, bboxes)
         return lines_estimates
 
     def _preprocessing(self, image: np.ndarray) -> np.ndarray:
         return self.binarizer.binarize(image)
 
-    def _get_evaluation_bboxes(self, image: np.ndarray,
+    def __get_evaluation_bboxes(self, image: np.ndarray,
                                bboxes: List[List[BBox]]) -> List[List[float]]:
         evaluation_bboxes = []
         for line in bboxes:
@@ -46,7 +46,7 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
     def evaluation_method(self, image: np.ndarray) -> float:
         pass
 
-    def _clusterization(self, lines_estimates: List[List[float]]) -> List[List[float]]:
+    def __clusterization(self, lines_estimates: List[List[float]]) -> List[List[float]]:
         len_lines = [len(line) for line in lines_estimates]
         word_estimates = llist2vector(lines_estimates, len_lines)
         word_indicators = self.clusterizater.clusterization(word_estimates)

@@ -13,12 +13,12 @@ class Reader:
         files = os.listdir(path_dir)
         pages = []
         for name_file in files:
-            if self._is_page(path_dir, name_file):
+            if self.__is_page(path_dir, name_file):
                 page = self.get_page(path_dir, name_file)
                 pages.append(page)
         return pages
 
-    def _is_page(self, path_dir: str, name: str) -> bool:
+    def __is_page(self, path_dir: str, name: str) -> bool:
         if not name.split(".")[-1] in ["jpg", "png", "jpeg"]:
             return False
 
@@ -37,7 +37,7 @@ class Reader:
         pkl_path = os.path.join(path_dir, name + ".pkl")
 
         image = self._get_image(path_dir, img_path)
-        bboxes, style = self._get_bboxes_and_style(path_dir, pkl_path)
+        bboxes, style = self.__get_bboxes_and_style(path_dir, pkl_path)
         page = Page(image, bboxes, style, name)
         return page
 
@@ -49,7 +49,7 @@ class Reader:
         image = cv2.imdecode(chunk_arr, cv2.IMREAD_COLOR)
         return image
 
-    def _get_bboxes_and_style(self, path_dir: str,
+    def __get_bboxes_and_style(self, path_dir: str,
                               name_pkl_file: str) -> (List[List[BBox]], List[List[float]]):
         path_image = os.path.join(path_dir, name_pkl_file)
         with open(path_image, 'rb') as f:
