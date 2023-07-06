@@ -73,8 +73,8 @@ def print_evaluate(evaluate: Dict) -> None:
         print(f"{kei + ':':{12}} {evaluate[kei]:.2f}")
 
 
-def check_classifier(classifier: BaseBoldClassifier, pages: List[Page], classifier_name: str,
-                     clusterizers_name:str, dataset_name:str):
+def check_classifier(classifier: BaseBoldClassifier, pages: List[Page], classifier_name: str, clusterizers_name: str,
+                     dataset_name: str):
     evaluate_rez = evaluate_on_dataset(classifier, pages)
     print("=" * 60)
     print(f"I N F O : \ndataset:{dataset_name} \nclassifier: {classifier_name} \nclusterizer: {clusterizers_name}")
