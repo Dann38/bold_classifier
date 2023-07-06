@@ -4,7 +4,7 @@ from ..clusterization_bold_classifier import ClusterizationBoldClassifier
 
 
 class PsBoldClassifier(ClusterizationBoldClassifier):
-    def evaluation_method(self, image: np.ndarray) -> float:
+    def evaluation_one_bbox_image(self, image: np.ndarray) -> float:
         image_p = self._get_base_line_image(image)  # baseline - main font area
         image_s = self._get_rid_spaces(image_p)  # removing spaces from a string
         hw = image_s.shape[0] * image_s.shape[1]
