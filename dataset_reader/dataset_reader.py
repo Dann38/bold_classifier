@@ -38,7 +38,7 @@ class Reader:
 
         image = self._get_image(path_dir, img_path)
         bboxes, style = self._get_bboxes_and_style(path_dir, pkl_path)
-        page = Page(image, bboxes, style)
+        page = Page(image, bboxes, style, name)
         return page
 
     def _get_image(self, path_dir: str, name_image_file: str) -> np.ndarray:
