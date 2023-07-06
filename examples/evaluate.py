@@ -10,16 +10,9 @@ from dataset_reader.page import Page
 from bold_classifier import *
 from bold_classifier.utils import llist2vector
 from bold_classifier.bold_classifier import BaseBoldClassifier
-
+from clusterizer import *
 
 path_dir_dataset = os.path.join(os.getcwd(), "dataset")
-list_name_dataset = ["ВКР", "ГОСТ", "Геометрия"]
-classifiers = {
-    "PsBoldClassifier": PsBoldClassifier(),
-    "MeanBoldClassifier": MeanBoldClassifier(),
-    "HistBoldClassifier": HistBoldClassifier()
-}
-
 
 def get_dataset(name_dataset: str, path_dataset: str = path_dir_dataset) -> List[Page]:
     reader = Reader()
@@ -79,7 +72,8 @@ def print_evaluate(evaluate: Dict) -> None:
         print(f"{kei + ':':{12}} {evaluate[kei]:.2f}")
 
 
-def main():
+def check_classifier_dataset(classifiers: Dict[str, BaseBoldClassifier],
+                             list_name_dataset: List[str]):
     for name_dataset in list_name_dataset:
         pages = get_dataset(name_dataset)
         print("*" * 15, name_dataset, "*" * 15)
@@ -90,4 +84,17 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    list_name_dataset = ["ВКР", "ГОСТ", "Геометрия"]
+    classifiers = {
+        "PsBoldClassifier": PsBoldClassifier(),
+        "MeanBoldClassifier": MeanBoldClassifier(),
+        "HistBoldClassifier": HistBoldClassifier()
+    }
+    check_classifier_dataset(classifiers, list_name_dataset)
+    print("=" * 60)
+    classifiers = {
+        "BoldSpectralClusterizer": PsBoldClassifier(clusterizer=BoldSpectralClusterizer()),
+        "Bold2MeanClusterizer": PsBoldClassifier(clusterizer=Bold2MeanClusterizer()),
+        "BoldFixedThresholdClusterizer": PsBoldClassifier(clusterizer=BoldFixedThresholdClusterizer())
+    }
+    check_classifier_dataset(classifiers, list_name_dataset)

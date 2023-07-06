@@ -5,7 +5,7 @@ import numpy as np
 from ..bold_classifier import BaseBoldClassifier
 from ..utils import vector2llist, llist2vector
 
-from clusterizer import BoldSpectralClusterizer
+from clusterizer import BoldSpectralClusterizer, BaseClusterizer
 from binarizer import ValleyEmphasisBinarizer
 from dataset_reader.bbox import BBox
 
@@ -13,9 +13,9 @@ PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop b
 
 
 class ClusterizationBoldClassifier(BaseBoldClassifier):
-    def __init__(self, binarizer=ValleyEmphasisBinarizer, clusterizer=BoldSpectralClusterizer):
-        self.binarizer = binarizer()
-        self.clusterizer = clusterizer()
+    def __init__(self, clusterizer: BaseClusterizer = BoldSpectralClusterizer()):
+        self.binarizer = ValleyEmphasisBinarizer()
+        self.clusterizer = clusterizer
 
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
         lines_estimates = self.get_lines_estimates(image, bboxes)
