@@ -13,13 +13,13 @@ PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop b
 
 
 class ClusterizationBoldClassifier(BaseBoldClassifier):
-    def __init__(self, binarizer=ValleyEmphasisBinarizer, clusterizater=BoldSpectralClusterizer):
+    def __init__(self, binarizer=ValleyEmphasisBinarizer, clusterizer=BoldSpectralClusterizer):
         self.binarizer = binarizer()
-        self.clusterizater = clusterizater()
+        self.clusterizer = clusterizer()
 
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
         lines_estimates = self.get_lines_estimates(image, bboxes)
-        lines_bold_indicators = self.__clusterization(lines_estimates)
+        lines_bold_indicators = self.__clusterize(lines_estimates)
         return lines_bold_indicators
 
     def get_lines_estimates(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
@@ -46,10 +46,10 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
     def evaluation_method(self, image: np.ndarray) -> float:
         pass
 
-    def __clusterization(self, lines_estimates: List[List[float]]) -> List[List[float]]:
+    def __clusterize(self, lines_estimates: List[List[float]]) -> List[List[float]]:
         len_lines = [len(line) for line in lines_estimates]
         word_estimates = llist2vector(lines_estimates, len_lines)
-        word_indicators = self.clusterizater.clusterize(word_estimates)
+        word_indicators = self.clusterizer.clusterize(word_estimates)
         lines_estimates = vector2llist(word_indicators, len_lines)
         return lines_estimates
 
