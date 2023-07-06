@@ -1,6 +1,9 @@
 import os
 from typing import List, Dict
 
+import numpy as np
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
 from dataset_reader.dataset_reader import Reader
 from dataset_reader.page import Page
 
@@ -26,66 +29,49 @@ def get_dataset(name_dataset: str, path_dataset: str = path_dir_dataset) -> List
 
 
 def evaluate_on_dataset(classifier: BaseBoldClassifier, pages: List[Page]) -> Dict:
-    count_pages = len(pages)
-    evaluate_sum = {
-        "precession": 0,
-        "recall": 0,
-        "F1": 0,
-        "accuracy": 0,
-        "N": 0
-    }
+    word_indicators_sum_true = []
+    word_indicators_sum = []
 
-    for num_page in range(count_pages):
-        llist = classifier.classify(pages[num_page].image, pages[num_page].bboxes)
-        evaluate_method = evaluate_llist(llist, pages[num_page].style)
+    for page in pages:
+        llist = classifier.classify(page.image, page.bboxes)
+        llist_true = page.style
 
-        for key in evaluate_sum.keys():
-            if key == "N":
-                evaluate_sum[key] += evaluate_method["N"]
-            else:
-                evaluate_sum[key] += evaluate_method["N"] * evaluate_method[key]
+        word_indicators_true, word_indicators = get_y_true_and_pred(llist_true, llist)
+        word_indicators_sum.append(word_indicators)
+        word_indicators_sum_true.append(word_indicators_true)
 
-    for key in evaluate_sum.keys():
-        if key != "N":
-            evaluate_sum[key] = evaluate_sum[key] / evaluate_sum["N"]
+    word_indicators_sum_true = np.concatenate(word_indicators_sum_true, axis=None)
+    word_indicators_sum = np.concatenate(word_indicators_sum, axis=None)
 
-    p = evaluate_sum["precession"]
-    r = evaluate_sum["recall"]
-    evaluate_sum["F1"] = 2*p*r/(p+r)
-
+    evaluate_sum = evaluate_vector(word_indicators_sum_true, word_indicators_sum)
     return evaluate_sum
 
 
-def evaluate_llist(llist: List[List[float]], llist_true: List[List[float]]) -> Dict:
+def evaluate_llist(llist_true: List[List[float]], llist: List[List[float]]) -> Dict:
+    word_indicators_true, word_indicators = get_y_true_and_pred(llist_true, llist)
+    evaluate = evaluate_vector(word_indicators_true, word_indicators)
+    return evaluate
+
+
+def evaluate_vector(vector_true: np.ndarray, vector_pred: np.ndarray) -> Dict:
+    count_word = len(vector_pred)
+    p = precision_score(vector_true, vector_pred, zero_division=True)
+    r = recall_score(vector_true, vector_pred, zero_division=True)
+    f1 = f1_score(vector_true, vector_pred, zero_division=True)
+    accuracy = accuracy_score(vector_true, vector_pred)
+
+    return {"count word": count_word, "precession": p, "recall": r, "F1": f1, "accuracy": accuracy}
+
+
+def get_y_true_and_pred(llist_true: List[List[float]], llist: List[List[float]]) -> (List[float], List[float]):
     len_lines = [len(line) for line in llist_true]
     word_indicators = llist2vector(llist, len_lines)
     word_indicators_true = llist2vector(llist_true, len_lines)
 
-    N = len(word_indicators)
-
-    TX = word_indicators[word_indicators == word_indicators_true]
-    FX = word_indicators[word_indicators != word_indicators_true]
-    TP = sum(TX)
-    TN = len(TX) - TP
-    FP = sum(FX)
-    FN = len(FX) - FP
-
-    if TP+FP == 0:
-        p = 1.
-    else:
-        p = TP / (TP + FP)
-    if TP + FN == 0:
-        r = 1.
-    else:
-        r = TP / (TP + FN)
-
-    if p + r == 0:
-        f1 = 0.
-    else:
-        f1 = 2 * (p * r) / (p + r)
-    accuracy = (TP + TN) / N
-
-    return {"N": N, "precession": p, "recall": r, "F1": f1, "accuracy": accuracy}
+    #  elements not identified during manual markup
+    word_indicators = word_indicators[word_indicators_true != 2]
+    word_indicators_true = word_indicators_true[word_indicators_true != 2]
+    return word_indicators_true, word_indicators
 
 
 def print_evaluate(evaluate: Dict) -> None:
