@@ -67,16 +67,17 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
         max2 = 0
         argmax1 = 0
         argmax2 = 0
-        for i in range(len(delta_mean)):
-            if delta_mean[i] > max2:
-                if delta_mean[i] > max1:
-                    max2 = max1
-                    argmax2 = argmax1
-                    max1 = delta_mean[i]
-                    argmax1 = i
-                else:
-                    max2 = delta_mean[i]
-                    argmax2 = i
+        for i, delta_mean_i in enumerate(delta_mean):
+            if delta_mean_i <= max2:
+                continue
+            if delta_mean_i > max1:
+                max2 = max1
+                argmax2 = argmax1
+                max1 = delta_mean_i
+                argmax1 = i
+            else:
+                max2 = delta_mean_i
+                argmax2 = i
         h_min = min(argmax1, argmax2)
         h_max = min(max(argmax1, argmax2) + 1, h)
         if h_max-h_min < PERMISSIBLE_H_BBOX:
