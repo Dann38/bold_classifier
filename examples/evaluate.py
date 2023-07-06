@@ -11,10 +11,15 @@ from bold_classifier.bold_classifier import BaseBoldClassifier
 
 path_dir_dataset = os.path.join(os.getcwd(), "dataset")
 list_name_dataset = ["ВКР", "ГОСТ", "Геометрия"]
-classifier_list = [PsBoldClassifier, MeanBoldClassifier, HistBoldClassifier]
+classifiers = {
+    "PsBoldClassifier": PsBoldClassifier(),
+    "MeanBoldClassifier": MeanBoldClassifier(),
+    "HistBoldClassifier": HistBoldClassifier()
+}
 
 
 def get_dataset(name_dataset: str, path_dataset: str = path_dir_dataset) -> List[Page]:
+    reader = Reader()
     name_data = os.path.join(path_dataset, name_dataset)
     pages = reader.get_array_pages(name_data)
     return pages
@@ -84,19 +89,19 @@ def evaluate_llist(llist: List[List[float]], llist_true: List[List[float]]) -> D
 
 
 def print_evaluate(evaluate: Dict) -> None:
-    print("-" * 10, classifier.__name__, "-" * 10)
     for kei in evaluate.keys():
         print(f"{kei + ':':{12}} {evaluate[kei]:.2f}")
 
 
-if __name__ == "__main__":
-    reader = Reader()
+def main():
     for name_dataset in list_name_dataset:
         pages = get_dataset(name_dataset)
-
         print("*" * 15, name_dataset, "*" * 15)
-        for classifier in classifier_list:
-            cl = classifier()
-            cl.clusterizater.significance_level = 0.5
-            evaluate_rez = evaluate_on_dataset(cl, pages)
+        for classifier_name, classifier in classifiers.items():
+            evaluate_rez = evaluate_on_dataset(classifier, pages)
+            print("-" * 10, classifier_name, "-" * 10)
             print_evaluate(evaluate_rez)
+
+
+if __name__ == "__main__":
+    main()
