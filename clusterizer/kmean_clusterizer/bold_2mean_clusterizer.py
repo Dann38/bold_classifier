@@ -6,9 +6,6 @@ from types_font import BOLD, REGULAR
 
 
 class Bold2MeanClusterizer(BaseClusterizer):
-    def __init__(self, significance_level=0.5):
-        self.significance_level = significance_level
-
     def clusterize(self, x: np.ndarray) -> np.ndarray:
         nearby_x = x.copy()
         nearby_x[:-1] += x[1:]
