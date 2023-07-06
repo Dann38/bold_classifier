@@ -11,11 +11,7 @@ from .page import Page
 class Reader:
     def get_array_pages(self, path_dir: str) -> List[Page]:
         files = os.listdir(path_dir)
-        pages = []
-        for name_file in files:
-            if self.__is_page(path_dir, name_file):
-                page = self.get_page(path_dir, name_file)
-                pages.append(page)
+        pages = [self.get_page(path_dir, name_file) for name_file in files if self.__is_page(path_dir, name_file)]
         return pages
 
     def __is_page(self, path_dir: str, name: str) -> bool:
