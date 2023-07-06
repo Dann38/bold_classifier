@@ -80,6 +80,7 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
                     argmax2 = i
         h_min = min(argmax1, argmax2)
         h_max = min(max(argmax1, argmax2) + 1, h)
-
+        if h_max-h_min < PERMISSIBLE_H_BBOX:
+            return image
         return image[h_min:h_max, :]
 

@@ -8,8 +8,6 @@ class HistBoldClassifier(ClusterizationBoldClassifier):
         step_hist = 0.05
         img = self._get_base_line_image(image)
         img = self._get_rid_spaces(img)
-        if len(img) == 0:
-            return 1
         if img.shape[1] == 0:
             return 1
         x = img.mean(1)
