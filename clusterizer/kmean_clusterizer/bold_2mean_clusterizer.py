@@ -19,13 +19,17 @@ class Bold2MeanClusterizer(BaseClusterizer):
         x_vec = [[x[i], nearby_x[i]] for i in range(len(x))]
         kmeans = KMeans(n_clusters=2, n_init="auto")
         kmeans.fit(x_vec)
+        x_clust = kmeans.labels_
 
-        cluster0 = kmeans.cluster_centers_[0][0]
-        cluster1 = kmeans.cluster_centers_[1][0]
+        x_clust0 = x[x_clust == 0]
+        x_clust1 = x[x_clust == 1]
 
-        bold_cluster = min(cluster0, cluster1)
-        regular_cluster = max(cluster0, cluster1)
-        distance_cluster = regular_cluster-bold_cluster
-        x_clust = np.zeros_like(x) + REGULAR
-        x_clust[x-bold_cluster < bold_cluster+distance_cluster*self.significance_level] = BOLD
+        if self._is_homogeneous(x, x_clust0, x_clust1):
+            return np.zeros_like(x) + REGULAR
+        if np.mean(x[x_clust == 1]) < np.mean(x[x_clust == 0]):
+            x_clust[x_clust == 1] = BOLD
+            x_clust[x_clust == 0] = REGULAR
+        else:
+            x_clust[x_clust == 0] = BOLD
+            x_clust[x_clust == 1] = REGULAR
         return x_clust

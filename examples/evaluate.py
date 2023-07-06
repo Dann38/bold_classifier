@@ -9,10 +9,11 @@ from dataset_reader.page import Page
 
 from bold_classifier import *
 from bold_classifier.utils import llist2vector
-from bold_classifier.bold_classifier import BaseBoldClassifier
+
 from clusterizer import *
 
 path_dir_dataset = os.path.join(os.getcwd(), "dataset")
+
 
 def get_dataset(name_dataset: str, path_dataset: str = path_dir_dataset) -> List[Page]:
     reader = Reader()

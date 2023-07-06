@@ -1,1 +1,3 @@
 from .clusterization_bold_classifier import PsBoldClassifier, MeanBoldClassifier, HistBoldClassifier
+from .bold_classifier import BaseBoldClassifier
+

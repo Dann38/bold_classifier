@@ -5,7 +5,7 @@ import numpy as np
 from ..bold_classifier import BaseBoldClassifier
 from ..utils import vector2llist, llist2vector
 
-from clusterizer import BoldSpectralClusterizer, BaseClusterizer
+from clusterizer import Bold2MeanClusterizer, BaseClusterizer
 from binarizer import ValleyEmphasisBinarizer
 from dataset_reader.bbox import BBox
 
@@ -13,7 +13,7 @@ PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop b
 
 
 class ClusterizationBoldClassifier(BaseBoldClassifier):
-    def __init__(self, clusterizer: BaseClusterizer = BoldSpectralClusterizer()):
+    def __init__(self, clusterizer: BaseClusterizer = Bold2MeanClusterizer()):
         self.binarizer = ValleyEmphasisBinarizer()
         self.clusterizer = clusterizer
 

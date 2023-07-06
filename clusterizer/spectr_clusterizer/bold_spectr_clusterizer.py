@@ -1,6 +1,5 @@
 import numpy as np
 from sklearn.cluster import SpectralClustering
-from scipy.stats import norm
 
 from ..clusterizater import BaseClusterizer
 from types_font import BOLD, REGULAR
@@ -26,17 +25,7 @@ class BoldSpectralClusterizer(BaseClusterizer):
         x_clust0 = x[x_clust == 0]
         x_clust1 = x[x_clust == 1]
 
-        #  https: // www.tsi.lv / sites / default / files / editor / science / Research_journals / Tr_Tel / 2003 / V1 /
-        #  yatskiv_gousarova.pdf
-        w1 = np.std(x) * len(x)
-        w2 = np.std(x_clust0)*len(x_clust0) + np.std(x_clust1)*len(x_clust1)
-        f1 = w2/w1
-        p = 2
-        n = len(x)
-        za1 = norm.ppf(1-self.significance_level, loc=0, scale=1)
-        f_cr = 1-2/(np.pi*p) - za1*np.sqrt(abs(2*(1-8/(np.pi**2/p))/(n*p)))
-
-        if f1 > f_cr:
+        if self._is_homogeneous(x, x_clust0, x_clust1):
             return np.zeros_like(x)+REGULAR
         if np.mean(x[x_clust == 1]) < np.mean(x[x_clust == 0]):
             x_clust[x_clust == 1] = BOLD
