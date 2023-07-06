@@ -30,8 +30,7 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
     def _preprocessing(self, image: np.ndarray) -> np.ndarray:
         return self.binarizer.binarize(image)
 
-    def __get_evaluation_bboxes(self, image: np.ndarray,
-                               bboxes: List[List[BBox]]) -> List[List[float]]:
+    def __get_evaluation_bboxes(self, image: np.ndarray, bboxes: List[List[BBox]]) -> List[List[float]]:
         evaluation_bboxes = []
         for line in bboxes:
             evaluation_bboxes.append([])

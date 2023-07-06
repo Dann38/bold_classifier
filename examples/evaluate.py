@@ -73,8 +73,7 @@ def print_evaluate(evaluate: Dict) -> None:
         print(f"{kei + ':':{12}} {evaluate[kei]:.2f}")
 
 
-def check_classifier_dataset(classifiers: Dict[str, BaseBoldClassifier],
-                             list_name_dataset: List[str]):
+def check_classifier_dataset(classifiers: Dict[str, BaseBoldClassifier], list_name_dataset: List[str]):
     for name_dataset in list_name_dataset:
         pages = get_dataset(name_dataset)
         print("*" * 15, name_dataset, "*" * 15)
@@ -86,6 +85,11 @@ def check_classifier_dataset(classifiers: Dict[str, BaseBoldClassifier],
 
 if __name__ == "__main__":
     list_name_dataset = ["ВКР", "ГОСТ", "Геометрия"]
+    datasets = {
+        "ВКР": "path/to_VKR",
+
+
+    }
     classifiers = {
         "PsBoldClassifier": PsBoldClassifier(),
         "MeanBoldClassifier": MeanBoldClassifier(),
