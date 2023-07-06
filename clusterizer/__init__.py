@@ -1,4 +1,3 @@
-from .kmean_clusterizer.bold_2mean_clusterizer import Bold2MeanClusterizer
-from .spectr_clusterizer.bold_spectr_clusterizer import BoldSpectralClusterizer
-from .fixed_threshold_clusterizer.bold_fixed_threshold_clusterizer import BoldFixedThresholdClusterizer
-from .clusterizater import BaseClusterizer
+from .bold_clusterizer import Bold2MeanClusterizer, BoldSpectralClusterizer, BoldFixedThresholdClusterizer
+from .bold_clusterizer import BaseBoldClusterizer
+from .clusterizer import BaseClusterizer
