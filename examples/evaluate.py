@@ -73,33 +73,39 @@ def print_evaluate(evaluate: Dict) -> None:
         print(f"{kei + ':':{12}} {evaluate[kei]:.2f}")
 
 
-def check_classifier_dataset(classifiers: Dict[str, BaseBoldClassifier], list_name_dataset: List[str]):
-    for name_dataset in list_name_dataset:
-        pages = get_dataset(name_dataset)
-        print("*" * 15, name_dataset, "*" * 15)
-        for classifier_name, classifier in classifiers.items():
-            evaluate_rez = evaluate_on_dataset(classifier, pages)
-            print("-" * 10, classifier_name, "-" * 10)
-            print_evaluate(evaluate_rez)
+def check_classifier(classifier: BaseBoldClassifier, pages: List[Page], classifier_name: str,
+                     clusterizers_name:str, dataset_name:str):
+    evaluate_rez = evaluate_on_dataset(classifier, pages)
+    print("=" * 60)
+    print(f"I N F O : \ndataset:{dataset_name} \nclassifier: {classifier_name} \nclusterizer: {clusterizers_name}")
+    print("\nR E S U L T :")
+    print_evaluate(evaluate_rez)
+    print("-" * 60, "\n")
+
+
+def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
+    clusterizers = {
+        "BoldSpectralClusterizer": BoldSpectralClusterizer(),
+        "Bold2MeanClusterizer": Bold2MeanClusterizer(),
+        "BoldFixedThresholdClusterizer": BoldFixedThresholdClusterizer()
+    }
+    classifiers_class = {
+        "PsBoldClassifier": PsBoldClassifier,
+        "MeanBoldClassifier": MeanBoldClassifier,
+        "HistBoldClassifier": HistBoldClassifier
+    }
+    for classifier_class_name, classifiers_class in classifiers_class.items():
+        for clusterizer_name, clusterizer in clusterizers.items():
+            classifier = classifiers_class(clusterizer=clusterizer)
+            check_classifier(classifier, pages, classifier_class_name, clusterizer_name, dataset_name)
+
+
+def main():
+    list_dataset_name = ["ВКР", "ГОСТ", "Геометрия"]  # Prepared sets in the project directory "dataset"
+    for dataset_name in list_dataset_name:
+        pages = get_dataset(dataset_name)
+        check_classifier_and_clusterizer(pages, dataset_name)
 
 
 if __name__ == "__main__":
-    list_name_dataset = ["ВКР", "ГОСТ", "Геометрия"]
-    datasets = {
-        "ВКР": "path/to_VKR",
-
-
-    }
-    classifiers = {
-        "PsBoldClassifier": PsBoldClassifier(),
-        "MeanBoldClassifier": MeanBoldClassifier(),
-        "HistBoldClassifier": HistBoldClassifier()
-    }
-    check_classifier_dataset(classifiers, list_name_dataset)
-    print("=" * 60)
-    classifiers = {
-        "BoldSpectralClusterizer": PsBoldClassifier(clusterizer=BoldSpectralClusterizer()),
-        "Bold2MeanClusterizer": PsBoldClassifier(clusterizer=Bold2MeanClusterizer()),
-        "BoldFixedThresholdClusterizer": PsBoldClassifier(clusterizer=BoldFixedThresholdClusterizer())
-    }
-    check_classifier_dataset(classifiers, list_name_dataset)
+    main()
