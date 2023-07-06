@@ -2,15 +2,15 @@ import numpy as np
 from sklearn.cluster import SpectralClustering
 from scipy.stats import norm
 
-from ..clusterizater import BaseClusterizater
+from ..clusterizater import BaseClusterizer
 from types_font import BOLD, REGULAR
 
 
-class BoldSpectralClusterizater(BaseClusterizater):
+class BoldSpectralClusterizer(BaseClusterizer):
     def __init__(self, significance_level=0.5):
         self.significance_level = significance_level
 
-    def clusterization(self, x: np.ndarray) -> np.ndarray:
+    def clusterize(self, x: np.ndarray) -> np.ndarray:
         nearby_x = x.copy()
         nearby_x[:-1] += x[1:]
         nearby_x[1:] += x[:-1]

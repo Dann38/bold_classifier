@@ -1,11 +1,11 @@
 import numpy as np
 
-from ..clusterizater import BaseClusterizater
+from ..clusterizater import BaseClusterizer
 from types_font import BOLD, REGULAR
 
 
-class BoldFixedThresholdClusterizater(BaseClusterizater):
-    def clusterization(self, x: np.ndarray) -> np.ndarray:
+class BoldFixedThresholdClusterizer(BaseClusterizer):
+    def clusterize(self, x: np.ndarray) -> np.ndarray:
         k = 0.5
         x_cluster = np.zeros_like(x)
         nearby_x = x.copy()

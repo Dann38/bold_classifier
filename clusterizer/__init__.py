@@ -1,0 +1,3 @@
+from .kmean_clusterizer.bold_2mean_clusterizater import Bold2MeanClusterizer
+from .spectr_clusterizer.bold_spectr_clusterizater import BoldSpectralClusterizer
+from .fixed_threshold_clusterizer.bold_fixed_threshold_clusterizater import BoldFixedThresholdClusterizer
