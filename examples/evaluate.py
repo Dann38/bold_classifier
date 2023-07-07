@@ -68,19 +68,24 @@ def get_y_true_and_pred(llist_true: List[List[float]], llist: List[List[float]])
     return word_indicators_true, word_indicators
 
 
+def print_info(dataset: str, classifier: str, clusterizer: str):
+    print("=" * 60)
+    print(f"I N F O : \ndataset:{dataset} \nclassifier: {classifier} \nclusterizer: {clusterizer}")
+
+
 def print_evaluate(evaluate: Dict) -> None:
+    print("\nR E S U L T :")
     for kei in evaluate.keys():
         print(f"{kei + ':':{12}} {evaluate[kei]:.2f}")
+    print("-" * 60, "\n")
 
 
 def check_classifier(classifier: BaseBoldClassifier, pages: List[Page], classifier_name: str, clusterizers_name: str,
-                     dataset_name: str):
+                     dataset_name: str) -> Dict:
     evaluate_rez = evaluate_on_dataset(classifier, pages)
-    print("=" * 60)
-    print(f"I N F O : \ndataset:{dataset_name} \nclassifier: {classifier_name} \nclusterizer: {clusterizers_name}")
-    print("\nR E S U L T :")
+    print_info(dataset_name, classifier_name, clusterizers_name)
     print_evaluate(evaluate_rez)
-    print("-" * 60, "\n")
+    return evaluate_rez
 
 
 def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
@@ -92,12 +97,23 @@ def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
     classifiers_class = {
         "PsBoldClassifier": PsBoldClassifier,
         "MeanBoldClassifier": MeanBoldClassifier,
-        "HistBoldClassifier": HistBoldClassifier
+        "MedianBoldClassifier": MedianBoldClassifier
     }
+    best_result = {"classifier": "", "clusterizer": "", "evaluate_rez": {}}
+    f1_max = 0.0
     for classifier_class_name, classifiers_class in classifiers_class.items():
         for clusterizer_name, clusterizer in clusterizers.items():
             classifier = classifiers_class(clusterizer=clusterizer)
-            check_classifier(classifier, pages, classifier_class_name, clusterizer_name, dataset_name)
+            evaluate_rez = check_classifier(classifier, pages, classifier_class_name, clusterizer_name, dataset_name)
+            if f1_max < evaluate_rez["F1"]:
+                f1_max = evaluate_rez["F1"]
+                best_result["classifier"] = classifier_class_name
+                best_result["clusterizer"] = clusterizer_name
+                best_result["evaluate_rez"] = evaluate_rez
+    print("@"*60, "\nBEST RESULT (F1): ")
+    print_info(dataset_name, best_result["classifier"], best_result["clusterizer"])
+    print_evaluate(best_result["evaluate_rez"])
+    print("@"*60)
 
 
 def main():
