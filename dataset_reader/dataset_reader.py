@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 import numpy as np
 import os
 import cv2
@@ -46,7 +46,7 @@ class Reader:
         return image
 
     def __get_bboxes_and_style(self, path_dir: str,
-                              name_pkl_file: str) -> (List[List[BBox]], List[List[float]]):
+                              name_pkl_file: str) -> Tuple[List[List[BBox]], List[List[float]]]:
         path_image = os.path.join(path_dir, name_pkl_file)
         with open(path_image, 'rb') as f:
             (dict_lines, style) = pickle.load(f)
