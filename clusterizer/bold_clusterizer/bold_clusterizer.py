@@ -31,9 +31,12 @@ class BaseBoldClusterizer(BaseClusterizer):
         pass
 
     def _get_indicator(self, x: np.ndarray, x_clusters: np.ndarray) -> np.ndarray:
-        x_clust0 = x[x_clusters == 0]
-        x_clust1 = x[x_clusters == 1]
-        if self._is_homogeneous(x, x_clust0, x_clust1):
+        #  https: // www.tsi.lv / sites / default / files / editor / science / Research_journals / Tr_Tel / 2003 / V1 /
+        #  yatskiv_gousarova.pdf
+        f1 = self._get_f1_homogeneous(x, x_clusters)
+        f_cr = self.__get_f_criterion_homogeneous(n=len(x))
+
+        if f_cr < f1:
             return np.zeros_like(x) + REGULAR
         if np.mean(x[x_clusters == 1]) < np.mean(x[x_clusters == 0]):
             x_clusters[x_clusters == 1] = BOLD
@@ -43,15 +46,18 @@ class BaseBoldClusterizer(BaseClusterizer):
             x_clusters[x_clusters == 1] = REGULAR
         return x_clusters
 
-    def _is_homogeneous(self, x: np.ndarray, x_clust0: np.ndarray, x_clust1: np.ndarray) -> bool:
-        #  https: // www.tsi.lv / sites / default / files / editor / science / Research_journals / Tr_Tel / 2003 / V1 /
-        #  yatskiv_gousarova.pdf
+    def _get_f1_homogeneous(self, x: np.ndarray, x_clusters: np.ndarray) -> float:
+        x_clust0 = x[x_clusters == 0]
+        x_clust1 = x[x_clusters == 1]
+        if len(x_clust0) == 0 or len(x_clust1) == 0:
+            return 1
+
         w1 = np.std(x) * len(x)
         w2 = np.std(x_clust0) * len(x_clust0) + np.std(x_clust1) * len(x_clust1)
         f1 = w2 / w1
-        p = 2
-        n = len(x)
+        return f1
+
+    def __get_f_criterion_homogeneous(self, n: int, p: int = 2) -> float:
         za1 = norm.ppf(1 - self.significance_level, loc=0, scale=1)
         f_cr = 1 - 2 / (np.pi * p) - za1 * np.sqrt(abs(2 * (1 - 8 / (np.pi ** 2 / p)) / (n * p)))
-
-        return f1 > f_cr
+        return f_cr
