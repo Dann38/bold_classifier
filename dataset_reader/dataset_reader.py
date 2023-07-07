@@ -32,12 +32,12 @@ class Reader:
         img_path = os.path.join(path_dir, name)
         pkl_path = os.path.join(path_dir, name + ".pkl")
 
-        image = self._get_image(path_dir, img_path)
+        image = self.__get_image(path_dir, img_path)
         bboxes, style = self.__get_bboxes_and_style(path_dir, pkl_path)
         page = Page(image, bboxes, style, name)
         return page
 
-    def _get_image(self, path_dir: str, name_image_file: str) -> np.ndarray:
+    def __get_image(self, path_dir: str, name_image_file: str) -> np.ndarray:
         path_image = os.path.join(path_dir, name_image_file)
         with open(path_image, "rb") as f:
             chunk = f.read()
