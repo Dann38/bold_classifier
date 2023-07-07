@@ -9,7 +9,7 @@ name_data = os.path.join(path_data, "ВКР")
 num_page = 7
 
 reader = Reader()
-pages = reader.get_array_pages(name_data)
+pages = reader.read_dataset(name_data)
 drawer = Drawer()
 classifier = PsBoldClassifier()
 

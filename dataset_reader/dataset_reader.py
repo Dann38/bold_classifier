@@ -9,9 +9,9 @@ from .page import Page
 
 
 class Reader:
-    def get_array_pages(self, path_dir: str) -> List[Page]:
+    def read_dataset(self, path_dir: str) -> List[Page]:
         files = os.listdir(path_dir)
-        pages = [self.get_page(path_dir, name_file) for name_file in files if self.__is_page(path_dir, name_file)]
+        pages = [self.read_page(path_dir, name_file) for name_file in files if self.__is_page(path_dir, name_file)]
         return pages
 
     def __is_page(self, path_dir: str, name: str) -> bool:
@@ -28,7 +28,7 @@ class Reader:
 
         return True
 
-    def get_page(self, path_dir: str, name: str) -> Page:
+    def read_page(self, path_dir: str, name: str) -> Page:
         img_path = os.path.join(path_dir, name)
         pkl_path = os.path.join(path_dir, name + ".pkl")
 

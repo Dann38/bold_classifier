@@ -12,13 +12,11 @@ from bold_classifier.utils import llist2vector
 
 from clusterizer import *
 
-path_dir_dataset = os.path.join(os.getcwd(), "dataset")
 
-
-def get_dataset(name_dataset: str, path_dataset: str = path_dir_dataset) -> List[Page]:
+def get_dataset(name_dataset: str, path_dataset: str) -> List[Page]:
     reader = Reader()
     name_data = os.path.join(path_dataset, name_dataset)
-    pages = reader.get_array_pages(name_data)
+    pages = reader.read_dataset(name_data)
     return pages
 
 
@@ -117,9 +115,10 @@ def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
 
 
 def main():
+    path_dir_dataset = os.path.join(os.getcwd(), "dataset")
     list_dataset_name = ["ВКР", "ГОСТ", "Геометрия"]  # Prepared sets in the project directory "dataset"
     for dataset_name in list_dataset_name:
-        pages = get_dataset(dataset_name)
+        pages = get_dataset(dataset_name, path_dataset=path_dir_dataset)
         check_classifier_and_clusterizer(pages, dataset_name)
 
 

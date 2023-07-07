@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from typing import List
 import numpy as np
 from scipy.stats import norm
 from ..clusterizer import BaseClusterizer
@@ -27,7 +26,7 @@ class BaseBoldClusterizer(BaseClusterizer):
         return np.array(x_vec)
 
     @ abstractmethod
-    def _get_clusters(self, x_vector: np.ndarray) -> (np.ndarray, np.ndarray):
+    def _get_clusters(self, x_vector: np.ndarray) -> np.ndarray:
         pass
 
     def _get_indicator(self, x: np.ndarray, x_clusters: np.ndarray) -> np.ndarray:

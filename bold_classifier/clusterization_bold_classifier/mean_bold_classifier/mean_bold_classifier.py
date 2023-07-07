@@ -5,8 +5,10 @@ from ..clusterization_bold_classifier import ClusterizationBoldClassifier
 
 class MeanBoldClassifier(ClusterizationBoldClassifier):
     def evaluation_one_bbox_image(self, image: np.ndarray) -> float:
-        bl_image = self._get_base_line_image(image)
-        image_s = self._get_rid_spaces(bl_image)
-        if np.isnan(image_s).all():
-            return 0.0
-        return image_s.mean()
+        base_line_image = self._get_base_line_image(image)
+        base_line_image_without_spaces = self._get_rid_spaces(base_line_image)
+        if np.isnan(base_line_image_without_spaces).all():
+            evaluation = 0.0
+        else:
+            evaluation = base_line_image_without_spaces.mean()
+        return evaluation
