@@ -13,9 +13,12 @@ PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop b
 
 
 class ClusterizationBoldClassifier(BaseBoldClassifier):
-    def __init__(self, clusterizer: BaseClusterizer = Bold2MeanClusterizer()):
+    def __init__(self, clusterizer: BaseClusterizer = None):
         self.binarizer = ValleyEmphasisBinarizer()
-        self.clusterizer = clusterizer
+        if clusterizer is None:
+            self.clusterizer = Bold2MeanClusterizer()
+        else:
+            self.clusterizer = clusterizer
 
     def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
         bboxes_evaluation = self.get_bboxes_evaluation(image, bboxes)
