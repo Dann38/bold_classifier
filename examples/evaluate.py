@@ -115,7 +115,7 @@ def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
 
 
 def main():
-    path_dir_dataset = os.path.join(os.getcwd(), "..", "dataset")
+    path_dir_dataset = os.path.join(os.getcwd(), os.path.pardir, "dataset")
     list_dataset_name = ["ВКР", "ГОСТ", "Геометрия"]  # Prepared sets in the project directory "dataset"
     for dataset_name in list_dataset_name:
         pages = get_dataset(dataset_name, path_dataset=path_dir_dataset)
