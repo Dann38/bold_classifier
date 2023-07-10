@@ -1,6 +1,8 @@
 from typing import List
-from .bbox import BBox
+
 import numpy as np
+
+from .bbox import BBox
 
 
 class Page:

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
+
 import numpy as np
 
 from dataset_reader.bbox import BBox

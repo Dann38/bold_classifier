@@ -1,5 +1,5 @@
-import numpy as np
 import cv2
+import numpy as np
 
 
 # https://github.com/mtntruong/entropy-otsu/blob/master/implementation/neighbor_valley_emphasis.m

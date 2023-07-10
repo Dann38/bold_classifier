@@ -4,13 +4,11 @@ from typing import List, Dict
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-from dataset_reader.dataset_reader import Reader
-from dataset_reader.page import Page
-
 from bold_classifier import *
 from bold_classifier.utils import llist2vector
-
 from clusterizer import *
+from dataset_reader.dataset_reader import Reader
+from dataset_reader.page import Page
 
 
 def get_dataset(name_dataset: str, path_dataset: str) -> List[Page]:
@@ -115,7 +113,7 @@ def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
 
 
 def main():
-    path_dir_dataset = os.path.join(os.getcwd(), "dataset")
+    path_dir_dataset = os.path.join(os.getcwd(), os.path.pardir, "dataset")
     list_dataset_name = ["ВКР", "ГОСТ", "Геометрия"]  # Prepared sets in the project directory "dataset"
     for dataset_name in list_dataset_name:
         pages = get_dataset(dataset_name, path_dataset=path_dir_dataset)
