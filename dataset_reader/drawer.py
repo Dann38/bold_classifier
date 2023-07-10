@@ -1,4 +1,4 @@
-from bold_classifier.bold_classifier import BOLD, REGULAR
+from bold_classifier.types_font import BOLD, REGULAR
 from typing import List
 from dataset_reader.bbox import BBox
 import cv2
@@ -9,7 +9,6 @@ COLOR_REGULAR_ROW = (0, 255, 0)
 OFFSET_ROW = 2
 
 
-
 class Drawer:
     def __init__(self):
         self.HEIGHT = 800
@@ -18,7 +17,7 @@ class Drawer:
         h = img.shape[0]
         w = img.shape[1]
         coef = w / h
-        img_mark = self.mark_out(img , bboxes, style)
+        img_mark = self.mark_out(img, bboxes, style)
         img = cv2.resize(img_mark, (round(coef * self.HEIGHT), self.HEIGHT))
         cv2.imshow("img", img)
         cv2.waitKey(0)

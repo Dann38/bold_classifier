@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 import numpy as np
 import os
 import cv2
@@ -9,16 +9,12 @@ from .page import Page
 
 
 class Reader:
-    def get_array_pages(self, path_dir: str) -> List[Page]:
+    def read_dataset(self, path_dir: str) -> List[Page]:
         files = os.listdir(path_dir)
-        pages = []
-        for name_file in files:
-            if self.is_page(path_dir, name_file):
-                page = self.get_page(path_dir, name_file)
-                pages.append(page)
+        pages = [self.read_page(path_dir, name_file) for name_file in files if self.__is_page(path_dir, name_file)]
         return pages
 
-    def is_page(self, path_dir: str, name: str) -> bool:
+    def __is_page(self, path_dir: str, name: str) -> bool:
         if not name.split(".")[-1] in ["jpg", "png", "jpeg"]:
             return False
 
@@ -32,17 +28,16 @@ class Reader:
 
         return True
 
-    def get_page(self, path_dir: str, name: str) -> Page:
+    def read_page(self, path_dir: str, name: str) -> Page:
         img_path = os.path.join(path_dir, name)
         pkl_path = os.path.join(path_dir, name + ".pkl")
 
-        image = self.get_image(path_dir, img_path)
-        bboxes, style = self.get_bboxes_and_style(path_dir, pkl_path)
-
-        page = Page(image, bboxes, style)
+        image = self.__get_image(path_dir, img_path)
+        bboxes, style = self.__get_bboxes_and_style(path_dir, pkl_path)
+        page = Page(image, bboxes, style, name)
         return page
 
-    def get_image(self, path_dir: str, name_image_file: str) -> np.ndarray:
+    def __get_image(self, path_dir: str, name_image_file: str) -> np.ndarray:
         path_image = os.path.join(path_dir, name_image_file)
         with open(path_image, "rb") as f:
             chunk = f.read()
@@ -50,8 +45,8 @@ class Reader:
         image = cv2.imdecode(chunk_arr, cv2.IMREAD_COLOR)
         return image
 
-    def get_bboxes_and_style(self, path_dir: str,
-                             name_pkl_file: str) -> (List[List[int]], List[List[int]]):
+    def __get_bboxes_and_style(self, path_dir: str,
+                              name_pkl_file: str) -> Tuple[List[List[BBox]], List[List[float]]]:
         path_image = os.path.join(path_dir, name_pkl_file)
         with open(path_image, 'rb') as f:
             (dict_lines, style) = pickle.load(f)
