@@ -30,8 +30,12 @@ class BaseBoldClusterizer(BaseClusterizer):
         pass
 
     def _get_indicator(self, x: np.ndarray, x_clusters: np.ndarray) -> np.ndarray:
-        #  https: // www.tsi.lv / sites / default / files / editor / science / Research_journals / Tr_Tel / 2003 / V1 /
-        #  yatskiv_gousarova.pdf
+        # https://www.tsi.lv/sites/default/files/editor/science/Research_journals/Tr_Tel/2003/V1/yatskiv_gousarova.pdf
+        # https://www.svms.org/classification/DuHS95.pdf
+        # Pattern Classification and Scene Analysis (2nd ed.)
+        # Part 1: Pattern Classification
+        # Richard O. Duda, Peter E. Hart and David G. Stork
+        # February 27, 1995
         f1 = self._get_f1_homogeneous(x, x_clusters)
         f_cr = self.__get_f_criterion_homogeneous(n=len(x))
 
@@ -58,5 +62,5 @@ class BaseBoldClusterizer(BaseClusterizer):
 
     def __get_f_criterion_homogeneous(self, n: int, p: int = 2) -> float:
         za1 = norm.ppf(1 - self.significance_level, loc=0, scale=1)
-        f_cr = 1 - 2 / (np.pi * p) - za1 * np.sqrt(abs(2 * (1 - 8 / (np.pi ** 2 / p)) / (n * p)))
+        f_cr = 1 - 2 / (np.pi * p) - za1 * np.sqrt(2 * (1 - 8 / (np.pi ** 2 * p)) / (n * p))
         return f_cr
