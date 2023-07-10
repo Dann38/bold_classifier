@@ -1,4 +1,5 @@
 import numpy as np
+
 from ..bold_clusterizer import BaseBoldClusterizer
 
 

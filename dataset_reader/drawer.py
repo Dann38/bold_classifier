@@ -1,8 +1,11 @@
-from bold_classifier.types_font import BOLD, REGULAR
 from typing import List
-from dataset_reader.bbox import BBox
+
 import cv2
 import numpy as np
+
+from bold_classifier.types_font import BOLD, REGULAR
+from dataset_reader.bbox import BBox
+
 COLOR_BOLD_ROW = (255, 0, 0)
 COLOR_OFFSET_ROW = (0, 0, 255)
 COLOR_REGULAR_ROW = (0, 255, 0)

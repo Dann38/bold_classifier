@@ -1,5 +1,4 @@
 import numpy as np
-from typing import List
 from sklearn.cluster import KMeans
 
 from ..bold_clusterizer import BaseBoldClusterizer

@@ -4,13 +4,11 @@ from typing import List, Dict
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-from dataset_reader.dataset_reader import Reader
-from dataset_reader.page import Page
-
 from bold_classifier import *
 from bold_classifier.utils import llist2vector
-
 from clusterizer import *
+from dataset_reader.dataset_reader import Reader
+from dataset_reader.page import Page
 
 
 def get_dataset(name_dataset: str, path_dataset: str) -> List[Page]:

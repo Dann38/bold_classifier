@@ -1,8 +1,10 @@
 from abc import abstractmethod
+
 import numpy as np
 from scipy.stats import norm
-from ..clusterizer import BaseClusterizer
+
 from bold_classifier.types_font import BOLD, REGULAR
+from ..clusterizer import BaseClusterizer
 
 
 class BaseBoldClusterizer(BaseClusterizer):

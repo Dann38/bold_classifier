@@ -1,8 +1,9 @@
-from typing import List, Tuple
-import numpy as np
 import os
-import cv2
 import pickle
+from typing import List, Tuple
+
+import cv2
+import numpy as np
 
 from .bbox import BBox
 from .page import Page

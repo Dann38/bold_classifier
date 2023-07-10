@@ -1,8 +1,8 @@
-from dataset_reader.dataset_reader import Reader
 import os
-from dataset_reader.drawer import Drawer
-from bold_classifier import PsBoldClassifier
 
+from bold_classifier import PsBoldClassifier
+from dataset_reader.dataset_reader import Reader
+from dataset_reader.drawer import Drawer
 
 path_data = os.path.join(os.getcwd(), "../dataset")
 name_data = os.path.join(path_data, "ВКР")
