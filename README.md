@@ -7,7 +7,7 @@
 - **binarizer** - "бинаризатор" - проводит бинаризацию изображения
 - **bold_classifier** - "классификатор жирного начертания" (ставит слову в соответствие 
 BOLD или REGULAR т.е жирный или не жирный текст)
-- **clusterizater** - "кластеризатор по оценки относит к классу"
+- **clusterizer** - "кластеризатор по оценки относит к классу"
 - **dataset** - пример размеченных данных
 - **examples** - примеры работы (evaluate - оценка точности и полноты методов)
 - **dataset_reader** - все, что необходимо для чтения изображений и 
@@ -15,15 +15,17 @@ BOLD или REGULAR т.е жирный или не жирный текст)
 
 setup загружает 4 пакета: binarizer, bold_classifier, clusterizater, dataset_reader
 ```python
+python3 -m pip install -r requirements.txt
 python3 -m pip install .
 ```
 
 ### Классификатор:
 **PsBoldClassifier** - отношение периметра к площади (классификация на основе бинаризованного изображения)
+*(лучший)*
 
 **MeanBoldClassifier** - среднее значение (классификация на основе бинаризованного изображения)
 
-
+**MedianBoldClassifier** - медианное значение (классификация на основе бинаризованного изображения)
 ### Бинариза'тор:
 **ValleyEmphasisBinarizer** - бинаризация выделение впадины (адаптивная бинаризация)
 
@@ -31,8 +33,8 @@ python3 -m pip install .
 
 
 ### Кластериза'тор
-**Bold2MeanClusterizater** - KMean кластеризация (k=2)
+**Bold2MeanClusterizer** - KMean кластеризация (k=2)
 
-**BoldSpectralClusterizater** - Выделение связных компонент
+**BoldSpectralClusterizer** - Выделение связных компонент
 
-**BoldFixedThresholdClusterizater** - Пороговая кластеризация (порог = 0.5)
+**BoldFixedThresholdClusterizer** - Пороговая кластеризация (порог 0.4-0.6)

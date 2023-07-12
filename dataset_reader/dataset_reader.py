@@ -1,8 +1,10 @@
-from typing import List, Tuple
-import numpy as np
 import os
-import cv2
 import pickle
+from typing import List
+from typing import Tuple
+
+import cv2
+import numpy as np
 
 from .bbox import BBox
 from .page import Page
@@ -45,10 +47,11 @@ class Reader:
         image = cv2.imdecode(chunk_arr, cv2.IMREAD_COLOR)
         return image
 
-    def __get_bboxes_and_style(self, path_dir: str,
-                              name_pkl_file: str) -> Tuple[List[List[BBox]], List[List[float]]]:
+    def __get_bboxes_and_style(self, path_dir: str, name_pkl_file: str) -> Tuple[List[BBox], List[float]]:
         path_image = os.path.join(path_dir, name_pkl_file)
         with open(path_image, 'rb') as f:
-            (dict_lines, style) = pickle.load(f)
-        bboxes = [[BBox.from_dict(box) for box in line] for line in dict_lines]
+            (llist_bboxes, llist_style) = pickle.load(f)
+        bboxes = [BBox.from_dict(bbox) for line_i in llist_bboxes for bbox in line_i]
+        style = [int(element_style) for line_i in llist_style for element_style in line_i]
         return bboxes, style
+

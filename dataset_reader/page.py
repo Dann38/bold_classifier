@@ -1,11 +1,13 @@
 from typing import List
-from .bbox import BBox
+
 import numpy as np
+
+from .bbox import BBox
 
 
 class Page:
-    def __init__(self, image: np.ndarray, bboxes: List[List[BBox]],
-                 style: List[List[int]], name: str):
+    def __init__(self, image: np.ndarray, bboxes: List[BBox],
+                 style: List[float], name: str):
         self.image = image
         self.bboxes = bboxes
         self.style = style

@@ -1,14 +1,15 @@
 import os
+
+from bold_classifier import PsBoldClassifier
 from dataset_reader.dataset_reader import Reader
 from dataset_reader.drawer import Drawer
-from bold_classifier import PsBoldClassifier
 
 path_dir_rez = "rez_ВКР"
 name_dataset = "ВКР"
 classifier_class = PsBoldClassifier
 os.mkdir(path_dir_rez)
 
-path_data = os.path.join(os.getcwd(), "../dataset")
+path_data = os.path.join(os.getcwd(), os.path.pardir, "dataset")
 name_data = os.path.join(path_data, name_dataset)
 
 reader = Reader()

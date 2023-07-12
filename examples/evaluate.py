@@ -4,13 +4,10 @@ from typing import List, Dict
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
+from bold_classifier import *
+from clusterizer import *
 from dataset_reader.dataset_reader import Reader
 from dataset_reader.page import Page
-
-from bold_classifier import *
-from bold_classifier.utils import llist2vector
-
-from clusterizer import *
 
 
 def get_dataset(name_dataset: str, path_dataset: str) -> List[Page]:
@@ -25,10 +22,10 @@ def evaluate_on_dataset(classifier: BaseBoldClassifier, pages: List[Page]) -> Di
     word_indicators_sum = []
 
     for page in pages:
-        llist = classifier.classify(page.image, page.bboxes)
-        llist_true = page.style
+        list_ = classifier.classify(page.image, page.bboxes)
+        list_true = page.style
 
-        word_indicators_true, word_indicators = get_y_true_and_pred(llist_true, llist)
+        word_indicators_true, word_indicators = get_y_true_and_pred(list_true, list_)
         word_indicators_sum.append(word_indicators)
         word_indicators_sum_true.append(word_indicators_true)
 
@@ -39,8 +36,8 @@ def evaluate_on_dataset(classifier: BaseBoldClassifier, pages: List[Page]) -> Di
     return evaluate_sum
 
 
-def evaluate_llist(llist_true: List[List[float]], llist: List[List[float]]) -> Dict:
-    word_indicators_true, word_indicators = get_y_true_and_pred(llist_true, llist)
+def evaluate_list(list_true: List[float], list_: List[float]) -> Dict:
+    word_indicators_true, word_indicators = get_y_true_and_pred(list_true, list_)
     evaluate = evaluate_vector(word_indicators_true, word_indicators)
     return evaluate
 
@@ -55,11 +52,9 @@ def evaluate_vector(vector_true: np.ndarray, vector_pred: np.ndarray) -> Dict:
     return {"count word": count_word, "precession": p, "recall": r, "F1": f1, "accuracy": accuracy}
 
 
-def get_y_true_and_pred(llist_true: List[List[float]], llist: List[List[float]]) -> (List[float], List[float]):
-    len_lines = [len(line) for line in llist_true]
-    word_indicators = llist2vector(llist, len_lines)
-    word_indicators_true = llist2vector(llist_true, len_lines)
-
+def get_y_true_and_pred(word_indicators_true: List[float], word_indicators: List[float]) -> (np.ndarray, np.ndarray):
+    word_indicators = np.array(word_indicators)
+    word_indicators_true = np.array(word_indicators_true)
     #  elements not identified during manual markup
     word_indicators = word_indicators[word_indicators_true != 2]
     word_indicators_true = word_indicators_true[word_indicators_true != 2]
@@ -115,7 +110,7 @@ def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
 
 
 def main():
-    path_dir_dataset = os.path.join(os.getcwd(), "dataset")
+    path_dir_dataset = os.path.join(os.getcwd(), os.path.pardir, "dataset")
     list_dataset_name = ["ВКР", "ГОСТ", "Геометрия"]  # Prepared sets in the project directory "dataset"
     for dataset_name in list_dataset_name:
         pages = get_dataset(dataset_name, path_dataset=path_dir_dataset)
