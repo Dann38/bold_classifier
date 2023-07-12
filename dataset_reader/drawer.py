@@ -33,7 +33,7 @@ class Drawer:
 
     def mark_out(self, img: np.ndarray, bboxes: List[BBox], style: List[float]) -> np.ndarray:
         img_mark = img.copy()
-        for word, style_word in zip(bboxes, style)(len(bboxes)):
+        for word, style_word in zip(bboxes, style):
             border = 1
             color = (155, 155, 155)
             if style_word == BOLD:

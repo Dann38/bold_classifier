@@ -4,7 +4,7 @@ from bold_classifier import PsBoldClassifier
 from dataset_reader.dataset_reader import Reader
 from dataset_reader.drawer import Drawer
 
-path_data = os.path.join(os.getcwd(), "../dataset")
+path_data = os.path.join(os.getcwd(),  os.path.pardir, "dataset")
 name_data = os.path.join(path_data, "ВКР")
 num_page = 7
 
