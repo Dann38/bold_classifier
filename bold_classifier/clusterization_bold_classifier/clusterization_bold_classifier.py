@@ -47,10 +47,7 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
 
     def __evaluation_one_bbox(self, image: np.ndarray, bbox: BBox) -> float:
         bbox_image = image[bbox.y_top_left:bbox.y_bottom_right, bbox.x_top_left:bbox.x_bottom_right]
-        if self._is_correct_bbox_image(bbox_image):
-            return self.evaluation_one_bbox_image(bbox_image)
-        else:
-            return 1.
+        return self.evaluation_one_bbox_image(bbox_image) if self.__is_correct_bbox_image(bbox_image) else 1.
 
     def __clusterize(self, bboxes_evaluation: List[float]) -> List[float]:
         vector_bbox_evaluation = np.array(bboxes_evaluation)
@@ -90,6 +87,6 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
             return image
         return image[h_min:h_max, :]
 
-    def _is_correct_bbox_image(self, image: np.ndarray) -> bool:
+    def __is_correct_bbox_image(self, image: np.ndarray) -> bool:
         h, w = image.shape[0:2]
         return h > 3 and w > 3
