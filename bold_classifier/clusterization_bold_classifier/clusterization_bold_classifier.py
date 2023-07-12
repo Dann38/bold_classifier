@@ -8,6 +8,7 @@ from clusterizer import Bold2MeanClusterizer, BaseClusterizer
 from dataset_reader.bbox import BBox
 from ..bold_classifier import BaseBoldClassifier
 from ..types_font import REGULAR
+
 PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop bbox
 
 
