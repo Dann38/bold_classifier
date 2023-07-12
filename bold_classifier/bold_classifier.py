@@ -8,7 +8,7 @@ from dataset_reader.bbox import BBox
 
 class BaseBoldClassifier(ABC):
     @abstractmethod
-    def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
+    def classify(self, image: np.ndarray,  bboxes: List[BBox]) -> List[float]:
         pass
 
 

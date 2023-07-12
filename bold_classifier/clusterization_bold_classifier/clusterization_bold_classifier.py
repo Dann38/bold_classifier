@@ -1,13 +1,12 @@
 from abc import abstractmethod
 from typing import List
+
 import numpy as np
 
-from ..bold_classifier import BaseBoldClassifier
-from ..utils import vector2llist, llist2vector
-
-from clusterizer import Bold2MeanClusterizer, BaseClusterizer
 from binarizer import ValleyEmphasisBinarizer
+from clusterizer import Bold2MeanClusterizer, BaseClusterizer
 from dataset_reader.bbox import BBox
+from ..bold_classifier import BaseBoldClassifier
 
 PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop bbox
 
@@ -20,12 +19,12 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
         else:
             self.clusterizer = clusterizer
 
-    def classify(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
+    def classify(self, image: np.ndarray,  bboxes: List[BBox]) -> List[float]:
         bboxes_evaluation = self.get_bboxes_evaluation(image, bboxes)
         bboxes_indicators = self.__clusterize(bboxes_evaluation)
         return bboxes_indicators
 
-    def get_bboxes_evaluation(self, image: np.ndarray,  bboxes: List[List[BBox]]) -> List[List[float]]:
+    def get_bboxes_evaluation(self, image: np.ndarray,  bboxes: List[BBox]) -> List[float]:
         processed_image = self._preprocessing(image)
         bboxes_evaluation = self.__get_evaluation_bboxes(processed_image, bboxes)
         return bboxes_evaluation
@@ -33,26 +32,22 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
     def _preprocessing(self, image: np.ndarray) -> np.ndarray:
         return self.binarizer.binarize(image)
 
-    def __get_evaluation_bboxes(self, image: np.ndarray, bboxes: List[List[BBox]]) -> List[List[float]]:
-        bboxes_evaluation = []
-        for line in bboxes:
-            bboxes_evaluation.append([])
-            for bbox in line:
-                bbox_image = image[bbox.y_top_left:bbox.y_bottom_right,
-                                   bbox.x_top_left:bbox.x_bottom_right]
-                bbox_evaluation = self.evaluation_one_bbox_image(bbox_image)
-                bboxes_evaluation[-1].append(bbox_evaluation)
+    def __get_evaluation_bboxes(self, image: np.ndarray, bboxes: List[BBox]) -> List[float]:
+        bboxes_evaluation = [self.__evaluation_one_bbox(image, bbox) for bbox in bboxes]
         return bboxes_evaluation
 
     @abstractmethod
     def evaluation_one_bbox_image(self, image: np.ndarray) -> float:
         pass
 
-    def __clusterize(self, bboxes_evaluation: List[List[float]]) -> List[List[float]]:
-        len_lines = [len(line) for line in bboxes_evaluation]
-        vector_bbox_evaluation = llist2vector(bboxes_evaluation, len_lines)
+    def __evaluation_one_bbox(self, image: np.ndarray, bbox: BBox) -> float:
+        bbox_image = image[bbox.y_top_left:bbox.y_bottom_right, bbox.x_top_left:bbox.x_bottom_right]
+        return self.evaluation_one_bbox_image(bbox_image)
+
+    def __clusterize(self, bboxes_evaluation: List[float]) -> List[float]:
+        vector_bbox_evaluation = np.array(bboxes_evaluation)
         vector_bbox_indicators = self.clusterizer.clusterize(vector_bbox_evaluation)
-        bboxes_indicators = vector2llist(vector_bbox_indicators, len_lines)
+        bboxes_indicators = list(vector_bbox_indicators)
         return bboxes_indicators
 
     def _get_rid_spaces(self, image: np.ndarray) -> np.ndarray:
