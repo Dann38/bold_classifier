@@ -23,7 +23,7 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
     def classify(self, image: np.ndarray,  bboxes: List[BBox]) -> List[float]:
         if len(bboxes) == 0:
             return []
-        elif len(bboxes) == 1:
+        if len(bboxes) == 1:
             return [REGULAR]
         bboxes_evaluation = self.get_bboxes_evaluation(image, bboxes)
         bboxes_indicators = self.__clusterize(bboxes_evaluation)
