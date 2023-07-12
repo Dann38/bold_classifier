@@ -15,12 +15,13 @@ BOLD или REGULAR т.е жирный или не жирный текст)
 
 setup загружает 4 пакета: binarizer, bold_classifier, clusterizater, dataset_reader
 ```python
-python -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 python3 -m pip install .
 ```
 
 ### Классификатор:
 **PsBoldClassifier** - отношение периметра к площади (классификация на основе бинаризованного изображения)
+*(лучший)*
 
 **MeanBoldClassifier** - среднее значение (классификация на основе бинаризованного изображения)
 
@@ -36,4 +37,4 @@ python3 -m pip install .
 
 **BoldSpectralClusterizer** - Выделение связных компонент
 
-**BoldFixedThresholdClusterizer** - Пороговая кластеризация (порог = 0.5)
+**BoldFixedThresholdClusterizer** - Пороговая кластеризация (порог 0.4-0.6)

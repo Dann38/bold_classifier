@@ -28,9 +28,6 @@ class ValleyEmphasisBinarizer:
         threshold = 0
 
         omega_1 = 0
-        omega_2 = 0
-        mu_1 = 0
-        mu_2 = 0
         mu_k = 0
 
         for t in range(254):

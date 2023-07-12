@@ -9,7 +9,7 @@ name_dataset = "ВКР"
 classifier_class = PsBoldClassifier
 os.mkdir(path_dir_rez)
 
-path_data = os.path.join(os.getcwd(), "../dataset")
+path_data = os.path.join(os.getcwd(), os.path.pardir, "dataset")
 name_data = os.path.join(path_data, name_dataset)
 
 reader = Reader()
