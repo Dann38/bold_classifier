@@ -57,7 +57,10 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
 
     def _get_rid_spaces(self, image: np.ndarray) -> np.ndarray:
         x = image.mean(0)
-        return image[:, x < 0.95]
+        not_space = x < 0.95
+        if len(not_space) > 3:
+            return image
+        return image[:, not_space]
 
     def _get_base_line_image(self, image: np.ndarray) -> np.ndarray:
         h = image.shape[0]
