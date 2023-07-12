@@ -7,7 +7,7 @@ from binarizer import ValleyEmphasisBinarizer
 from clusterizer import Bold2MeanClusterizer, BaseClusterizer
 from dataset_reader.bbox import BBox
 from ..bold_classifier import BaseBoldClassifier
-
+from ..types_font import REGULAR
 PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop bbox
 
 
@@ -20,6 +20,10 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
             self.clusterizer = clusterizer
 
     def classify(self, image: np.ndarray,  bboxes: List[BBox]) -> List[float]:
+        if len(bboxes) == 0:
+            return []
+        elif len(bboxes) == 1:
+            return [REGULAR]
         bboxes_evaluation = self.get_bboxes_evaluation(image, bboxes)
         bboxes_indicators = self.__clusterize(bboxes_evaluation)
         return bboxes_indicators
