@@ -4,7 +4,7 @@ from typing import List
 import numpy as np
 
 from binarizer import ValleyEmphasisBinarizer
-from clusterizer import Bold2MeanClusterizer, BaseClusterizer
+from clusterizer import BoldAgglomerativeClusterizer, BaseClusterizer
 from dataset_reader.bbox import BBox
 from ..bold_classifier import BaseBoldClassifier
 from ..types_font import REGULAR
@@ -16,7 +16,7 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
     def __init__(self, clusterizer: BaseClusterizer = None):
         self.binarizer = ValleyEmphasisBinarizer()
         if clusterizer is None:
-            self.clusterizer = Bold2MeanClusterizer()
+            self.clusterizer = BoldAgglomerativeClusterizer()
         else:
             self.clusterizer = clusterizer
 
