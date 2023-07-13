@@ -43,12 +43,15 @@ class BaseBoldClusterizer(BaseClusterizer):
 
         if f_cr < f1:
             return np.zeros_like(x) + REGULAR
+        dummy_variable = -1
         if np.mean(x[x_clusters == 1]) < np.mean(x[x_clusters == 0]):
-            x_clusters[x_clusters == 1] = BOLD
+            x_clusters[x_clusters == 1] = dummy_variable
             x_clusters[x_clusters == 0] = REGULAR
+            x_clusters[x_clusters == dummy_variable] = BOLD
         else:
+            x_clusters[x_clusters == 1] = dummy_variable
             x_clusters[x_clusters == 0] = BOLD
-            x_clusters[x_clusters == 1] = REGULAR
+            x_clusters[x_clusters == dummy_variable] = REGULAR
         return x_clusters
 
     def _get_f1_homogeneous(self, x: np.ndarray, x_clusters: np.ndarray) -> float:
