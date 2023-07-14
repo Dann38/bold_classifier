@@ -25,7 +25,7 @@ class BaseBoldClusterizer(BaseClusterizer):
         nearby_x[-1] += x[-1]
         nearby_x = nearby_x / 3.
         x_vec = np.stack((x, nearby_x), 1)
-        return np.array(x_vec)
+        return x_vec
 
     @ abstractmethod
     def _get_clusters(self, x_vector: np.ndarray) -> np.ndarray:
