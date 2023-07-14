@@ -83,15 +83,15 @@ def check_classifier(classifier: BaseBoldClassifier, pages: List[Page], classifi
 
 def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
     clusterizers = {
-        # "BoldSpectralClusterizer": BoldSpectralClusterizer(),
+        "BoldSpectralClusterizer": BoldSpectralClusterizer(),
         "Bold2MeanClusterizer": Bold2MeanClusterizer(),
-        # "BoldFixedThresholdClusterizer": BoldFixedThresholdClusterizer(),
+        "BoldFixedThresholdClusterizer": BoldFixedThresholdClusterizer(),
         "AgglomerativeClusterizer": BoldAgglomerativeClusterizer()
     }
     classifiers_class = {
         "PsBoldClassifier": PsBoldClassifier,
-        # "MeanBoldClassifier": MeanBoldClassifier,
-        # "MedianBoldClassifier": MedianBoldClassifier
+        "MeanBoldClassifier": MeanBoldClassifier,
+        "MedianBoldClassifier": MedianBoldClassifier
     }
     best_result = {"classifier": "", "clusterizer": "", "evaluate_rez": {}}
     f1_max = 0.0
