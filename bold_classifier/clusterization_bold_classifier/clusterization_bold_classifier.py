@@ -4,19 +4,20 @@ from typing import List
 import numpy as np
 
 from binarizer import ValleyEmphasisBinarizer
-from clusterizer import Bold2MeanClusterizer, BaseClusterizer
+from clusterizer import BoldAgglomerativeClusterizer, BaseClusterizer
 from dataset_reader.bbox import BBox
 from ..bold_classifier import BaseBoldClassifier
 from ..types_font import REGULAR
 
 PERMISSIBLE_H_BBOX = 5  # that height bbox after which it makes no sense сrop bbox
+PERMISSIBLE_W_BBOX = 3
 
 
 class ClusterizationBoldClassifier(BaseBoldClassifier):
     def __init__(self, clusterizer: BaseClusterizer = None):
         self.binarizer = ValleyEmphasisBinarizer()
         if clusterizer is None:
-            self.clusterizer = Bold2MeanClusterizer()
+            self.clusterizer = BoldAgglomerativeClusterizer()
         else:
             self.clusterizer = clusterizer
 
@@ -57,7 +58,10 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
 
     def _get_rid_spaces(self, image: np.ndarray) -> np.ndarray:
         x = image.mean(0)
-        return image[:, x < 0.95]
+        not_space = x < 0.95
+        if len(not_space) > PERMISSIBLE_W_BBOX:
+            return image
+        return image[:, not_space]
 
     def _get_base_line_image(self, image: np.ndarray) -> np.ndarray:
         h = image.shape[0]
@@ -89,4 +93,4 @@ class ClusterizationBoldClassifier(BaseBoldClassifier):
 
     def __is_correct_bbox_image(self, image: np.ndarray) -> bool:
         h, w = image.shape[0:2]
-        return h > 3 and w > 3
+        return h > PERMISSIBLE_H_BBOX and w > PERMISSIBLE_W_BBOX

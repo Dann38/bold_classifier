@@ -24,8 +24,8 @@ class BaseBoldClusterizer(BaseClusterizer):
         nearby_x[0] += x[0]
         nearby_x[-1] += x[-1]
         nearby_x = nearby_x / 3.
-        x_vec = [[x[i], nearby_x[i]] for i in range(len(x))]
-        return np.array(x_vec)
+        x_vec = np.stack((x, nearby_x), 1)
+        return x_vec
 
     @ abstractmethod
     def _get_clusters(self, x_vector: np.ndarray) -> np.ndarray:
@@ -43,12 +43,15 @@ class BaseBoldClusterizer(BaseClusterizer):
 
         if f_cr < f1:
             return np.zeros_like(x) + REGULAR
+        dummy_variable = -1
         if np.mean(x[x_clusters == 1]) < np.mean(x[x_clusters == 0]):
-            x_clusters[x_clusters == 1] = BOLD
+            x_clusters[x_clusters == 1] = dummy_variable
             x_clusters[x_clusters == 0] = REGULAR
+            x_clusters[x_clusters == dummy_variable] = BOLD
         else:
+            x_clusters[x_clusters == 1] = dummy_variable
             x_clusters[x_clusters == 0] = BOLD
-            x_clusters[x_clusters == 1] = REGULAR
+            x_clusters[x_clusters == dummy_variable] = REGULAR
         return x_clusters
 
     def _get_f1_homogeneous(self, x: np.ndarray, x_clusters: np.ndarray) -> float:
