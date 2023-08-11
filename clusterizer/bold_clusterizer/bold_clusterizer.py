@@ -9,7 +9,7 @@ from ..clusterizer import BaseClusterizer
 
 class BaseBoldClusterizer(BaseClusterizer):
     def __init__(self):
-        self.significance_level = 0.15
+        self.significance_level = 0.1
 
     def clusterize(self, x: np.ndarray) -> np.ndarray:
         x_vectors = self._get_prop_vectors(x)
@@ -18,13 +18,15 @@ class BaseBoldClusterizer(BaseClusterizer):
         return x_indicator
 
     def _get_prop_vectors(self, x: np.ndarray) -> np.ndarray:
-        nearby_x = x.copy()
-        nearby_x[:-1] += x[1:]
-        nearby_x[1:] += x[:-1]
-        nearby_x[0] += x[0]
-        nearby_x[-1] += x[-1]
-        nearby_x = nearby_x / 3.
-        x_vec = np.stack((x, nearby_x), 1)
+        # nearby_x = x.copy()
+        # nearby_x[:-1] += x[1:]
+        # nearby_x[1:] += x[:-1]
+        # nearby_x[0] += x[0]
+        # nearby_x[-1] += x[-1]
+        # nearby_x = nearby_x / 3.
+        # x_vec = np.stack((x, nearby_x), 1)
+        x_norm = x.copy()-x.mean()
+        x_vec = np.stack((x, x_norm), 1)
         return x_vec
 
     @ abstractmethod
