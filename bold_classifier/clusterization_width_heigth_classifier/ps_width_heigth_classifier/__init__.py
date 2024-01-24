@@ -1,0 +1,1 @@
+from .ps_bold_classifier import PsWidthHeigthClassifier

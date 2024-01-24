@@ -1,12 +1,12 @@
 import os
 
-from bold_classifier import PsBoldClassifier
+from bold_classifier import PsWidthHeigthClassifier
 from dataset_reader.dataset_reader import Reader
 from dataset_reader.drawer import Drawer
 
 path_dir_rez = "rez_ВКР"
 name_dataset = "ВКР"
-classifier_class = PsBoldClassifier
+classifier_class = PsWidthHeigthClassifier
 os.mkdir(path_dir_rez)
 
 path_data = os.path.join(os.getcwd(), os.path.pardir, "dataset")

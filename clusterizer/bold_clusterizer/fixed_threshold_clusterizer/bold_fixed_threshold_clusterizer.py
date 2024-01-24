@@ -6,7 +6,7 @@ from ..bold_clusterizer import BaseBoldClusterizer
 class BoldFixedThresholdClusterizer(BaseBoldClusterizer):
     def _get_clusters(self, x_vectors: np.ndarray) -> np.ndarray:
         # Practice has shown that the border of the bold font is between 0.45 and 0.55
-        k_list = np.linspace(0.45, 0.55, 10)
+        k_list = np.linspace(0.1, 0.9, 20)
         x = x_vectors[:, 0]
         nearby_x = x_vectors[:, 1]
         std = np.std(x)
