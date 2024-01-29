@@ -1,1 +1,2 @@
 from .bold_agglomerative_clusterizer import BoldAgglomerativeClusterizer
+from .n_agglomerative_clusterizer import NAgglomerativeClusterizer

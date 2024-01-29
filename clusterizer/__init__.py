@@ -1,6 +1,6 @@
 from .bold_clusterizer import BaseBoldClusterizer
 from .bold_clusterizer import Bold2MeanClusterizer, BoldSpectralClusterizer, BoldFixedThresholdClusterizer, \
-                              BoldAgglomerativeClusterizer
+                              BoldAgglomerativeClusterizer, NAgglomerativeClusterizer
 
 from .width_heigth_clusterizer import BaseWidthHeigthClusterizer
 from .width_heigth_clusterizer import WidthHeigthAgglomerativeClusterizer
