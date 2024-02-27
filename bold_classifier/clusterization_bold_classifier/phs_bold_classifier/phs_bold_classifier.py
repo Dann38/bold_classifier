@@ -1,27 +1,31 @@
 import numpy as np
 
-from ..clusterization_width_heigth_classifier import ClusterizationWidthHeigthClassifier
-from typing import Tuple
+from ..clusterization_bold_classifier import ClusterizationBoldClassifier
+
 PERMISSIBLE_H_BBOX = 5
-class PsWidthHeigthClassifier(ClusterizationWidthHeigthClassifier):
-    def evaluation_one_bbox_image(self, image: np.ndarray) -> Tuple[float, float]:
+
+class PhsBoldClassifier(ClusterizationBoldClassifier):
+    def evaluation_one_bbox_image(self, image: np.ndarray) -> float:
         base_line_image = self._get_base_line_image(image)  # baseline - main font area
-        s_img = 1 - self._get_rid_spaces(base_line_image)  # removing spaces from a string
-
-        p_img = base_line_image[:, :-1] - base_line_image[:, 1:]
-        p_img[abs(p_img) > 0] = 1.
-        p_img[p_img < 0] = 0.
-
+        base_line_image_without_sparces = self._get_rid_spaces(base_line_image)  # removing spaces from a string
+        base_line_image.dtype = "bool"
+        p_img_bool = np.logical_xor(base_line_image[:-1, :-1],  base_line_image[1:, 1:])
+        
+        p_img = np.ones_like(p_img_bool)
+        p_img[p_img_bool] = 0
         p = p_img.sum()
+
+        s_img = 1 - base_line_image_without_sparces
         s = s_img.sum()
-        # return (base_line_image_without_sparces.mean(), p_img.mean())
+
         h = base_line_image.shape[0]
         if p == 0:
-            evaluation1 = 1.
-        else:      
-            evaluation1 = s/(p*h)
-        return (evaluation1, 1)
+            evaluation = 1.
+        else:
+            evaluation = s/p/h
+        return evaluation
     
+
     def _get_base_line_image(self, image: np.ndarray) -> np.ndarray:
         h = image.shape[0]
         if h < PERMISSIBLE_H_BBOX:

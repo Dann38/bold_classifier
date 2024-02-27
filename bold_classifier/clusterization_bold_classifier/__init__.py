@@ -1,3 +1,4 @@
 from .mean_bold_classifier.mean_bold_classifier import MeanBoldClassifier
 from .median_bold_classifier.median_bold_classifier import MedianBoldClassifier
 from .ps_bold_classifier.ps_bold_classifier import PsBoldClassifier
+from .phs_bold_classifier.phs_bold_classifier import PhsBoldClassifier

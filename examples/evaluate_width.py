@@ -85,8 +85,8 @@ def check_classifier_and_clusterizer(pages: List[Page], dataset_name: str):
     classifiers = {
         "bold": {"clusterizers": BoldAgglomerativeClusterizer(),
          "classifiers_class": PsBoldClassifier},
-         "width": {"clusterizers": WidthHeigthAgglomerativeClusterizer(),
-         "classifiers_class": PsWidthHeigthClassifier}
+         "width": {"clusterizers": BoldAgglomerativeClusterizer(),
+         "classifiers_class": PhsBoldClassifier}
     }
     
     best_result = {"classifier": "", "evaluate_rez": {}}
