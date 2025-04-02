@@ -28,14 +28,13 @@ class FontEmbClassifier(CNNBoldClassifier):
     def get_word_evaluation(self, word_image: np.ndarray) -> float:
       
         resized_image = self.resize(word_image)
-        gray_image = resized_image/255.0
+        gray_image = resized_image
         
         chars = [[gray_image[:, i*WIDTH:(i+1)*WIDTH]] for i in range(gray_image.shape[1]//WIDTH)]
         if len(chars) == 0:
             return 0.0
         data = torch.Tensor(chars)
-        rez = self.font_emb_model(data)
-        rez = self.font_bold_model(rez)
-        rez = torch.sigmoid(rez)
-        print(rez)
-        return torch.mean(rez, 0)
+        font_emb = self.font_emb_model(data)
+        bold_class = self.font_bold_model(font_emb)
+        pred = torch.sigmoid(bold_class)
+        return torch.mean(pred, 0)
